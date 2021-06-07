@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="account.menu_account_supplier" name="Vendors"
+            parent="account.menu_finance_payables"
+            action="account.res_partner_action_supplier" sequence="200"/>
+
+    <menuitem
+            id="account.menu_action_move_in_refund_type"
+            action="account.action_move_in_refund_type"
+            parent="account.menu_finance_payables"
+            sequence="1" groups="base.group_user"/>
+
+    <menuitem
+            id="account.menu_action_move_in_receipt_type"
+            action="account.action_move_in_receipt_type"
+            parent="account.menu_finance_payables"
+            sequence="2"/>
+</odoo>

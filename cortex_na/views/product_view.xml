@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.product.form</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <field name="default_code" position="replace"/>
+                <field name="uom_id" position="before">
+                    <field name="running_avg_cost"/>
+                </field>
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="service_products" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//div[@class='oe_title']" position="replace">
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="default_code" string="Part Number"/>
+                        <h1><field name="default_code" placeholder="Part Number" required="1"/></h1>
+                        <group>
+                            <field name="name" string="Product Name"/>
+                        </group>
+                        <div name="options" groups="base.group_user">
+                            <div>
+                                <field name="sale_ok"/>
+                                <label for="sale_ok"/>
+                            </div>
+                            <div>
+                                <field name="purchase_ok"/>
+                                <label for="purchase_ok"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
+                    <label for="length"/>
+                    <div class="o_row" >
+                        <field name="length"/>
+                        <span>Inches</span>
+                    </div>
+                </xpath>
+                <button name="action_update_quantity_on_hand" position="attributes">
+                     <attribute name="invisible">True</attribute>
+                </button>
+                <button name="action_update_quantity_on_hand" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </button>
+                <xpath expr="//page[@name='inventory']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='traceability']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', 'in', ['consu','service'])]}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='operations']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '=', 'service')]}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='stock_property']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '=', 'service')]}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='group_lots_and_weight']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='packaging']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('type', 'not in', ['product', 'consu'])]}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='invoicing']" position="after">
+                    <page name="cornomics_details" string="Cornomics Data">
+                        <field name="cornomics_detail_ids" widget="one2many">
+                            <tree string="Cornomics Details" editable="bottom">
+                                <field name="compititor_company_id" required="1"/>
+                                <field name="product_des" required="1"/>
+                                <field name="estimated_consumption" required="1"/>
+                                <field name="estimated_price" required="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="manufacturing_detail" string="Manufacturing">
+                            <field name="product_with_vendor_ids" widget="one2many">
+                                <tree string="Manufacturing" editable="bottom">
+                                    <field name="company_id" invisible="True"/>
+                                    <field name="product_template_id" invisible="True"/>
+                                    <field name="partner_id" domain="[('supplier_rank','&gt;', 0)]"/>
+                                    <field name="bom_id" />
+                                </tree>
+                            </field>
+                        </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_product_tree_view_inherit" model="ir.ui.view">
+            <field name="name">Product Tree</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <field name="running_avg_cost" invisible="context.get('ctx_search_more_tree') == True"/>
+                    <field name="installed_quantity" />
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="invisible">context.get('ctx_search_more_tree') == True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_template_attribute_value_ids']" position="attributes">
+                    <attribute name="invisible">context.get('ctx_search_more_tree') == True</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_kanban_view_inherit" model="ir.ui.view">
+            <field name="name">Product Kanban</field>
+            <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <strong class="o_kanban_record_title" position="replace">
+                    <strong class="o_kanban_record_title">
+                        <div><field name="default_code"/></div>
+                        <small><field name="name"/></small>
+                    </strong>
+                </strong>
+            </field>
+        </record>
+
+        <record id="product_category_form_view_inherit" model="ir.ui.view">
+            <field name="name">Product category form</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="category_display_in_report" groups="base.group_no_one"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

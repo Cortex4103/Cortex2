@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cortex_report_mrp_mo" inherit_id="mrp_account_enterprise.mrp_cost_structure">
+        <xpath expr="//tbody/tr[1]" position="after">
+            <tr t-foreach="line['service_charge_ids']" t-as="m" class="o_mrp_data">
+                                <td>
+                                    <span t-esc="m['product_id'].default_code or ''"/>
+                                </td>
+                                <td>
+                                    <span class="o_mrp_reports_web_action" t-att-res-id="m['bom_line_id']" res-model="mrp.bom.line" view-type="form" t-esc="m['product_id'].display_name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="m['qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/> <span t-esc="m['product_id'].uom_id.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="m['cost'] / m['qty'] if m['qty'] else m['cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="m['cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                </td>
+            </tr>
+        </xpath>
+    </template>
+</odoo>

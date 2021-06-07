@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.form</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="model">mrp.production</field>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="create_purchase_order" attrs="{'invisible': ['|','|', ('purchase_order_id', '!=', False), ('partner_id', '=', False), ('state', 'in', ['cancel'])]}"
+                            string="Create Purchase Order" type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button type="object" name="action_open_sale_orders"   class="oe_stat_button"
+                     icon="fa-bar-chart" attrs="{'invisible': [('sale_order_count', '=', 0)]}">
+                        <field string="Sale Orders" name="sale_order_count" widget="statinfo" />
+                    </button>
+                </xpath>
+                <field name="origin" position="after">
+                    <field name="partner_id"/>
+                    <field name="currency_id" required="1"/>
+                    <field name="purchase_order_id" domain="[('state', '!=', 'cancel')]" context="{'partner_id':partner_id}"
+                           attrs="{'readonly':[('state', 'in', ['done', 'cancel'])]}" />
+                    <field name="sale_order_ids" widget="many2many_tags" domain="[('state', '!=', ('cancel','draft','sent'))]"
+                           attrs="{'readonly':[('state', 'in', ['done', 'cancel'])]}" />
+                </field>
+                <field name="origin" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="routing_id" position="after">
+                    <field name="origin"/>
+                    <field name="batch_production_id" readonly="1" force_save="1"/>
+                </field>
+                <xpath expr="//page[1]" position="after">
+                    <page string="Service Charges">
+                        <field name="service_charge_ids">
+                            <tree string="Service Charges" editable="bottom">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="product_id" required="1"/>
+                                <field name="price_unit"/>
+                                <field name="product_uom_id"/>
+                                <field name="quantity"/>
+                                <field name="bom_line_id" invisible="1"/>
+                                <field name="bom_charge_id" invisible="1"/>
+                                <field name="batch_production_id" invisible="1"/>
+                                <field name="subtotal" widget="monetary" readonly="1" force_save="1" options="{'currency_field': 'currency_id'}"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="service_charge_total" />
+                            </div>
+                            <field name="service_charge_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//notebook//page[4]" position="inside">
+                    <group>
+                        <group>
+                            <field name="code" invisible="1" />
+                            <field name="warehouse_id" invisible="1" />
+                        </group>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

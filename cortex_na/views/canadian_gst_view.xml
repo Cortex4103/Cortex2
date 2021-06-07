@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="canadian_gst" model="ir.actions.act_window">
+            <field name="name">Canadian GST</field>
+            <field name="res_model">canadian.gst</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="cortex_na.canadian_gst" id="menu_sale_canadian_gst" parent="purchase.menu_purchase_config" sequence="2" />
+        <menuitem action="cortex_na.canadian_gst" id="menu_purchase_canadian_gst" parent="sale.menu_sale_config" sequence="2" />
+
+        <record id="canadian_gst_tree_view" model="ir.ui.view">
+            <field name="name">canadian.gst.tree</field>
+            <field name="model">canadian.gst</field>
+            <field name="arch" type="xml">
+                <tree string="Canadian GST">
+                    <field name="state_id" />
+                    <field name="sale_gst" />
+                    <field name="purchase_gst" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="canadian_gst_form_view_inherit" model="ir.ui.view">
+            <field name="name">canadian.gst.form</field>
+            <field name="model">canadian.gst</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" invisible="1" placeholder="Name" nolabel="1" readonly="1" force_save="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="state_id" />
+                                <field name="sale_gst" />
+                                <field name="purchase_gst" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

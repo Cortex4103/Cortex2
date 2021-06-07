@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="machine_center_conical" model="machine.center">
+            <field name="name">Conical</field>
+        </record>
+
+        <record id="machine_center_drumhead" model="machine.center">
+            <field name="name">Drumhead</field>
+        </record>
+
+        <record id="machine_center_chipper" model="machine.center">
+            <field name="name">Chipper</field>
+        </record>
+
+        <record id="machine_center_profiler" model="machine.center">
+            <field name="name">Profiler</field>
+        </record>
+
+        <record id="machine_center_bridge" model="machine.center">
+            <field name="name">Bridge</field>
+        </record>
+
+        <record id="machine_center_edger" model="machine.center">
+            <field name="name">Edger</field>
+        </record>
+
+        <record id="machine_center_other" model="machine.center">
+            <field name="name">Other</field>
+        </record>
+
+<!--        Machine Center OEM-->
+
+        <record id="machine_center_oem_cortex" model="machine.center.oem">
+            <field name="name">Cortex</field>
+        </record>
+
+        <record id="machine_center_oem_az_iggesund" model="machine.center.oem">
+            <field name="name">AZ-Iggesund</field>
+        </record>
+
+        <record id="machine_center_oem_ke_HY2" model="machine.center.oem">
+            <field name="name">ke  HY2</field>
+        </record>
+
+        <record id="machine_center_oem_lindex" model="machine.center.oem">
+            <field name="name">Lindex</field>
+        </record>
+
+        <record id="machine_center_oem_usnr" model="machine.center.oem">
+            <field name="name">USNR</field>
+        </record>
+
+        <record id="machine_center_oem_comact" model="machine.center.oem">
+            <field name="name">Comact</field>
+        </record>
+
+        <record id="machine_center_oem_precision" model="machine.center.oem">
+            <field name="name">Precision</field>
+        </record>
+
+        <record id="machine_center_oem_nicholson" model="machine.center.oem">
+            <field name="name">Nicholson</field>
+        </record>
+
+        <record id="machine_center_oem_other" model="machine.center.oem">
+            <field name="name">Other</field>
+        </record>
+
+    </data>
+</odoo>

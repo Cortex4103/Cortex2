@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_only_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.template.form.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="active" eval="True"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='uom_id']" position="before">
+                        <field name="running_avg_cost"/>
+
+                    </xpath>
+                    <xpath expr="//field[@name='type']" position="after">
+                        <field name="service_products" widget="many2many_tags"/>
+
+                    </xpath>
+                    <xpath expr="//field[@name='barcode']" position="after">
+                        <field name="vendor_product_code_store" invisible="1"/>
+                        <label for="drawing_no" string="Drawing #"/>
+                        <div class="o_row" >
+                            <field name="drawing_no" style="margin-right: 10px;"/>
+                            <span attrs="{'invisible':[('drawing_version','=',False)]}" style="margin-right: 10px;"> - </span>
+                            <field name="drawing_version" help="Drawing Version"/>
+                        </div>
+                        <field name="installed_quantity" string="Installed Part Quantity"/>
+                        <label for="minimum_stock" string="Minimum Stock"/>
+                        <div class="o_row" >
+                            <field name="minimum_stock" style="margin-right: 10px;"/>
+                            <field name="unit_or_per" required="1" />
+                        </div>
+
+                    </xpath>
+                    <xpath expr="//field[@name='description']" position="after">
+                        <field name="drawing_pdf" colspan="2" nolabel="1" filename="file_name" widget="pdf_viewer"/>
+                        <field name="file_name" invisible="1"/>
+                    </xpath>
+
+                    <xpath expr="//field[@name='default_code']" position="replace"/>
+                    <xpath expr="//div[@class='oe_title']" position="replace">
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="default_code" string="Part Number"/>
+                            <h1><field name="default_code" placeholder="Part Number" required="1"/></h1>
+                            <group>
+                                <field name="name" string="Product Name"/>
+                            </group>
+                            <div name="options" groups="base.group_user">
+                                <div>
+                                    <field name="sale_ok"/>
+                                    <label for="sale_ok"/>
+                                </div>
+                                <div>
+                                    <field name="purchase_ok"/>
+                                    <label for="purchase_ok"/>
+                                </div>
+                            </div>
+                        </div>
+                    </xpath>
+
+                    <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
+                        <label for="length"/>
+                        <div class="o_row" >
+                            <field name="length"/>
+                            <span>Inches</span>
+                        </div>
+                    </xpath>
+                    <button name="action_update_quantity_on_hand" position="attributes">
+                        <attribute name="invisible">True</attribute>
+                    </button>
+                    <xpath expr="//page[@name='inventory']" position="attributes">
+                        <attribute name="attrs">{}</attribute>
+                    </xpath>
+                    <xpath expr="//group[@name='traceability']" position="attributes">
+                        <attribute name="attrs">{'invisible': [('type', 'in', ['consu','service'])]}</attribute>
+                    </xpath>
+                    <xpath expr="//group[@name='operations']" position="attributes">
+                        <attribute name="attrs">{'invisible': [('type', '=', 'service')]}</attribute>
+                    </xpath>
+                    <xpath expr="//group[@name='stock_property']" position="attributes">
+                        <attribute name="attrs">{'invisible': [('type', '=', 'service')]}</attribute>
+                    </xpath>
+                    <xpath expr="//group[@name='group_lots_and_weight']" position="attributes">
+                        <attribute name="attrs">{}</attribute>
+                    </xpath>
+                    <xpath expr="//page[@name='general_information']//field[@name='uom_po_id']" position="after">
+                        <field name="list_of_attachment">
+                            <tree editable="bottom" create="true" edit="true">
+                                <field name="file_type" required="1"/>
+                                <field name="attach_datas" filename="upload_file_name" widget="binary" required="1"/>
+                                <field name="upload_file_name" invisible="1"/>
+                                <field name="attachment_id" invisible="1"/>
+                            </tree>
+                        </field>
+
+
+                    </xpath>
+                    <xpath expr="//page[@name='invoicing']" position="after">
+                        <page name="cornomics_details" string="Cornomics Data">
+                            <field name="cornomics_detail_ids" widget="one2many">
+                                <tree string="Cornomics Details" editable="bottom">
+                                    <field name="compititor_company_id" required="1 "/>
+                                    <field name="product_des" required="1"/>
+                                    <field name="estimated_consumption" required="1"/>
+                                    <field name="estimated_price" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="manufacturing_detail" string="Manufacturing">
+                            <field name="product_with_vendor_ids" widget="one2many">
+                                <tree string="Manufacturing" editable="bottom">
+                                    <field name="company_id" invisible="True"/>
+                                    <field name="product_template_id" invisible="True"/>
+                                    <field name="partner_id" domain="[('supplier_rank','&gt;', 0)]"/>
+                                    <field name="bom_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="product_supplierinfo_tree_view_inherit" model="ir.ui.view">
+            <field name="name">product.supplierinfo.tree.view.inherit</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="product_code"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_list_view_inherit" model="ir.ui.view">
+            <field name="name">Product List</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <field name="running_avg_cost"/>
+                    <field name="installed_quantity"/>
+                </xpath>
+                <field name="uom_id" position="after">
+                    <field name="drawing_number"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_template_search_view_inherit" model="ir.ui.view">
+            <field name="name">product.template.search.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="after">
+                    <field name="vendor_product_code_store" string="Vendor Product Code"/>
+                </field>
+                <xpath expr="//search" position="inside">
+                    <field name="drawing_number"/>
+                </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="filter_domain">['|', '|', '|',('product_variant_ids.default_code', 'ilike', self),('name', 'ilike', self), ('barcode', 'ilike', self),('drawing_number', 'ilike', self)]</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_template_kanban_view_inherit" model="ir.ui.view">
+            <field name="name">Product.template.product.kanban</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <strong class="o_kanban_record_title" position="replace">
+                    <strong class="o_kanban_record_title">
+                        <div><field name="default_code"/></div>
+                        <small><field name="name"/></small>
+                    </strong>
+                </strong>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_template_form_view_procurement_button">
+            <field name="name">product.template_procurement</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <button name="action_product_tmpl_forecast_report" position="after">
+                    <button type="object" name="action_view_machine_parts" class="oe_stat_button"  icon="fa-gear">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                            <field name="machine_parts_count"/>
+                        </span>
+                        <span class="o_stat_text">Machine Centers</span>
+                        </div>
+                    </button>
+                    <button type="object" name="action_view_installed_parts" class="oe_stat_button" icon="fa-wrench">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                            <field name="installed_parts_count"/>
+                            </span>
+                            <span class="o_stat_text">Installed Part</span>
+                        </div>
+                    </button>
+                </button>
+            </field>
+        </record>
+    </data>
+</odoo>

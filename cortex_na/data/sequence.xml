@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_batch_production" model="ir.sequence">
+            <field name="name">Batch Production</field>
+            <field name="code">batch.production</field>
+            <field name="prefix"> BMO</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+    </data>
+</odoo>

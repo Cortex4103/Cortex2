@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="ir_actions_server_product_duplicate_with_bom" model="ir.actions.server">
+        <field name="name">Duplicate With BOM</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+        if record:
+            action = record.duplicate_with_bom()
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,201 @@
+.act_as_table {
+    display: table !important;
+    background-color: white;
+}
+.act_as_row {
+    display: table-row !important;
+    page-break-inside: avoid;
+}
+.act_as_cell {
+    display: table-cell !important;
+    page-break-inside: avoid;
+}
+.act_as_thead,
+.act_as_head {
+    display: table-header-group !important;
+}
+.data_table {
+    width: 100% !important;
+}
+.act_as_row.labels {
+    background-color: #fff !important;
+}
+.data_table,
+.act_as_row {
+    border-left: 0px;
+    border-right: 0px;
+    text-align: center;
+    font-size: 10px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+.act_as_row.labels,
+.act_as_row.lines {
+    border-color: grey !important;
+    border-bottom: 1px solid lightGrey !important;
+}
+.act_as_cell.amount {
+    word-wrap: normal;
+    text-align: right;
+}
+.act_as_cell.left {
+    text-align: left;
+}
+.act_as_cell.right {
+    text-align: right;
+}
+.date_col {
+    padding: 7px !important;
+}
+.date_col_header {
+    padding: 3px !important;
+}
+.page_break {
+    page-break-inside: avoid;
+}
+
+.button_row {
+    padding-bottom: 10px;
+}
+
+.o_cortex_reports_page {
+    overflow-x: auto;
+    padding-top: 10px;
+    width: 96%;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: Helvetica, Arial;
+}
+.btn_design {
+    background: #3ca09d;
+    color: #fff;
+    font-size: 15px;
+}
+.btn_design:hover {
+    color: #fff;
+    background-color: #007a77;
+}
+.hide_table {
+    display: none !important;
+}
+.table_title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 16px 0px;
+}
+
+.tableFixHead {
+    overflow-y: auto;
+    max-height: 400px;
+}
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th,
+td {
+    padding: 8px 16px;
+}
+.tableFixHead th,
+.o_account_reports_table th {
+    background: #eee;
+    border-bottom: 1px solid;
+    border-right: 3px solid rgb(238 238 238 / 83%);
+}
+.lines {
+    border-color: grey !important;
+    border-bottom: 1px solid lightGrey !important;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    top: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #875a7b;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #875a7b;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.show_title,
+.hide_title {
+    position: absolute;
+    background-color: #865a7b;
+    color: #fff;
+    padding: 3px;
+}
+
+.switch_title {
+    position: relative;
+    width: 50%;
+    left: 1%;
+}
+
+span.o_resize {
+    bottom: 0;
+    cursor: col-resize;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10px;
+    z-index: 1; /* must be over the sort caret (::after pseudo-element) */
+}

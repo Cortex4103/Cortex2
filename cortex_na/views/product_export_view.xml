@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="ir_actions_server_export_product" model="ir.actions.server">
+        <field name="name">Export</field>
+        <field name="model_id" ref="model_product_product"/>
+        <field name="state">code</field>
+        <field name="code">action = model.export_product()</field>
+    </record>
+
+    <report
+        id="alert_installed_part_report"
+        model="product.template"
+        string="Alert Installed Part Report"
+        name="cortex_na.cron_alert_installed_part_report"
+        file="Installed Part Stock Report"
+        report_type="qweb-pdf"
+        menu="False"
+    />
+
+<!--    <menuitem action="ir_actions_server_export_product"-->
+<!--              name="Product Export"-->
+<!--            id="menu_product_repoer"-->
+<!--            parent="sale.menu_sale_config"-->
+<!--            sequence="10"/>-->
+</odoo>

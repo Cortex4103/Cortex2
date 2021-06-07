@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_purchase_knife_process_report_pivot">
+        <field name="name">purchase.knife.process.report.pivot</field>
+        <field name="model">purchase.knife.process.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Knife Process Cost">
+                <field name="date_order" interval="month" type="col"/>
+                <field name="partner_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="qty_ordered" type="measure"/>
+                <field name="total_inches" type="measure"/>
+                <field name="cost_avg_per_inch" type="measure"/>
+                <field name="price_average" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_purchase_knife_process_report_search" model="ir.ui.view">
+        <field name="name">purchase.knife.process.report.search</field>
+        <field name="model">purchase.knife.process.report</field>
+        <field name="arch" type="xml">
+            <search string="Knife Process Cost">
+                <filter string="Requests for Quotation" name="quotes" domain="[('state','=','draft')]"/>
+                <filter string="Purchase Orders" name="orders" domain="[('state','!=','draft'),('state','!=','cancel')]"/>
+                <separator/>
+<!--                <filter string="Knife Proceses" name="filter_KnifeProceses" domain="[('category_id.name','=ilike', 'Knife Processes')]" />-->
+<!--                <separator/>-->
+                <filter string="This Year" name="this_year"  domain="[('date_order','&lt;=', time.strftime('%%Y-12-31')),('date_order','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <separator/>
+                <filter string="This Month" name="this_month" domain="['&amp;',('date_order','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_order','&gt;=',context_today().strftime('%%Y-%%m-01'))]" />
+                <filter string="Last Month" name="last_month" domain="['&amp;', ('date_order', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_order', '&lt;', context_today().strftime('%%Y-%%m-01'))]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[('date_order','&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),('date_order','&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59))]"/>
+                <filter name="yesterday" string="Yesterday" domain="[
+                    ('date_order','&gt;=', (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(1))),
+                    ('date_order','&lt;=', (datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59) - datetime.timedelta(1)))]"/>
+                <separator/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <group expand="0" string="Extended Filters">
+                    <field name="user_id"/>
+                    <field name="date_order"/>
+                    <field name="date_approve"/>
+                    <field name="category_id" filter_domain="[('category_id', 'child_of', self)]"/>
+                </group>
+                <group expand="1" string="Group By">
+                    <filter string="Vendor" name="group_partner_id" context="{'group_by':'partner_id'}"/>
+                    <filter string="Purchase Representative" name="user_id" context="{'group_by':'user_id'}"/>
+                    <filter string="Product" name="group_product_id" context="{'group_by':'product_id'}"/>
+                    <filter string="Product Category" name="group_category_id" context="{'group_by':'category_id'}"/>
+                    <filter string="Status" name="status" context="{'group_by':'state'}"/>
+                    <separator/>
+                    <filter string="Order Date" name="order_month" context="{'group_by': 'date_order:month'}"/>
+                    <filter string="Confirmation Date" name="group_date_approve_month" context="{'group_by': 'date_approve:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_report_purchase_knife_process" model="ir.actions.act_window">
+        <field name="name">Knife Process Cost</field>
+        <field name="res_model">purchase.knife.process.report</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_purchase_knife_process_report_pivot"/>
+        <field name="target">current</field>
+        <field name="domain">[('product_id.categ_id.name','=ilike','Knife Processes')]</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+    </record>
+    <menuitem id="menu_report_purchase_knife_process" name="Knife Process Cost"  action="action_report_purchase_knife_process" parent="purchase.purchase_report" sequence="2" groups="purchase.group_purchase_manager"/>
+</odoo>

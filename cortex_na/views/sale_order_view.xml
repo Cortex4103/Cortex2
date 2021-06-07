@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button type="object"  name="action_view_purchase_order" class="oe_stat_button"
+                    icon="fa-credit-card" attrs="{'invisible': [('purchase_count', '=', 0)]}">
+                <field string="Purchase Order" name="purchase_count" widget="statinfo" />
+                </button>
+                <button type="object" name="action_open_mo"  class="oe_stat_button"
+                    icon="fa-wrench" attrs="{'invisible': [('manufacturing_count', '=', 0)]}">
+                <field string="Manufacturing Orders" name="manufacturing_count" widget="statinfo" />
+                </button>
+            </div>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="after">
+                <field name="net_price" context="{'is_discount':1}"/>
+                <field name="sale_cost" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//div[@name='discount']" position="after">
+                <field name="net_price" context="{'is_discount':1}"/>
+                <field name="sale_cost" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='tax_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="amount_untaxed" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="amount_tax" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="client_order_ref" position="replace"/>
+            <field name="payment_term_id" position="after">
+                <field name="client_order_ref"/>
+                <field name="warehouse_id" options="{'no_create': True}" readonly="False" groups="stock.group_stock_multi_warehouses" force_save="1"/>
+                <field name="expected_ship_date" attrs="{'invisible': [('state', 'in', ['draft','sent'])]}"/>
+                <field name="dont_apply_gst"/>
+                <field name="delivered_amount" invisible="1"/>
+                <field name="pending_amount" invisible="1"/>
+                <field name="remaining_funds_to_be_received" widget="monetary" invisible="1"/>
+            </field>
+            <field name="note" position="attributes">
+                <attribute name="placeholder">Notes...</attribute>
+            </field>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="partner_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//div[@name='lead']" position="after">
+                <field name="partner_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_cancel']" position="before">
+                <button name="action_add_sawmill" type="object" string="Add Sawmill" class="oe_highlight"  attrs="{'invisible': [('state', 'in', ['draft', 'sent','done','sale','cancel'])]}" />
+            </xpath>
+            <field name="partner_id" position="attributes">
+                <attribute name="widget"/>
+                <attribute name="domain">['|',('is_company','=',True),('is_company','=',False),('parent_id','=',False),('customer_rank','>',0)]</attribute>
+            </field>
+
+            <group name="sale_shipping" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </group>
+
+            <field name="order_line" position="attributes">
+                <attribute name="context">{'ctx_partner_id': partner_id}</attribute>
+            </field>
+             <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="context">{'ctx_search_more_tree': 1}</attribute>
+            </xpath>
+            <field name="pricelist_id" position="before">
+                <field name="new_expected_date" /><!--attrs="{'readonly': [('payment_term_id', '=', False), ('state','in',('draft','sent'))]}"-->
+            </field>
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="show_in_cash_flow" />
+            </xpath>
+            <label for="commitment_date" position="replace"/>
+            <field name="commitment_date" position="replace"/>
+        </field>
+    </record>
+
+    <record id="view_order_tree_inherit" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="model">sale.order</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                 <field name="note" optional="hide" string="Notes"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                 <field name="client_order_ref" optional="hide" string="Customer Reference"/>
+            </xpath>
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="delivered_amount" string="Delivered Amount" sum="Total Delivered Amount" widget="monetary" />
+                <field name="pending_amount" string="Pending Amount" sum="Total Pending Amount" widget="monetary"/>
+                <field name="remaining_funds_to_be_received" sum="Total Remaining To Be Received" widget="monetary"/>
+            </xpath>
+            <xpath expr="//field[@name='expected_date']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='commitment_date']" position="replace"/>
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="new_expected_date" />
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="view_quotation_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="model">sale.order</field>
+        <field name="priority">4</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="note" optional="hide" string="Notes"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                 <field name="client_order_ref" optional="hide" string="Customer Reference"/>
+            </xpath>
+            <xpath expr="//field[@name='expected_date']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='commitment_date']" position="replace"/>
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="delivered_amount" string="Delivered Amount" sum="Total Delivered Amount" widget="monetary" />
+                <field name="pending_amount" string="Pending Amount" sum="Total Pending Amount" widget="monetary"/>
+                <field name="remaining_funds_to_be_received" sum="Total Remaining To Be Received" widget="monetary"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="new_expected_date" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter_inherit" model="ir.ui.view">
+        <field name="name">sale.order.list.select.inherit</field>
+        <field name="model">sale.order</field>
+         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator/>
+                <filter string="Open Orders" name="oper_order" domain="[('pending_amount', '>',0)]"/>
+                <separator/>
+                <filter string="Pending to Deliver" name="pending_to_deliver" domain="[]" context="{'ctx_amount_pending_to_deliver': 1}"/>
+                <separator/>
+                <filter string="Show In Case Flow" name="show_in_cash_flow"
+                        domain="[('show_in_cash_flow', '=', True)]"/>
+            </xpath>
+            <field name="order_line" position="after">
+                <field name="order_line" string="Product Category" filter_domain="[('order_line.product_id.categ_id', 'ilike', self)]"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+        <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1,'search_default_type_company': 1}</field>
+    </record>
+</odoo>

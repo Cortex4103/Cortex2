@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="main_template_balance_pl_report" inherit_id="account_reports.main_template">
+            <xpath expr="//div[hasclass('o_account_reports_body')]" position="attributes">
+                <attribute name="class">container o_account_reports_body</attribute>
+            </xpath>
+        </template>
+    </data>
+</odoo>

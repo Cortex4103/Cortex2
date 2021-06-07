@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.cortex</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//div[@id='confirmation_email_setting']" position="after">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">DO service product</span>
+                            <div class="text-muted">
+                                Product used for Service Charges
+                            </div>
+                            <div class="text-muted">
+                                <field name="product_id"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@id='confirmation_email_setting']" position="after">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Canadian GST Product</span>
+                            <div class="text-muted">
+                                Product used for Canadian GST
+                            </div>
+                            <div class="text-muted">
+                                <field name="canadian_gst_product_id"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+    </record> 
+</odoo>

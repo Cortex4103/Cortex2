@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="add_sawmill_form_view" model="ir.ui.view">
+        <field name="name">add.sawmill.form</field>
+        <field name="model">add.sawmill</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="apply_on" widget="radio"/>
+                        <field name="partner_id" required="1"/>
+<!--                        <field name="sale_id" invisible="1"/>-->
+                        <field name="stock_picking_id" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_add_sawmill" type="object" string="Add" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

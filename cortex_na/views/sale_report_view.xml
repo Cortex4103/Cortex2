@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_order_search" model="ir.ui.view">
+        <field name="name">sale.report.search</field>
+        <field name="model">sale.report</field>
+        <field name="arch" type="xml">
+            <search string="Sales Report">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="line_partner_id"/>
+                <field name="user_id"/>
+                <field name="product_id"/>
+                <field name="categ_id"/>
+                <filter string="This Month" name="this_month" domain="[('date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date','&gt;=',time.strftime('%%Y-%%m-01'))]" />
+                <filter string="Last Month" name="last_month" domain="['&amp;', ('date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date', '&lt;', context_today().strftime('%%Y-%%m-01'))]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[('date','&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),('date','&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59))]"/>
+                    <filter name="yesterday" string="Yesterday" domain="[
+                    ('date','&gt;=', (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(1))),
+                    ('date','&lt;=', (datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59) - datetime.timedelta(1)))]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
+                    <filter string="Customer" name="Customer" context="{'group_by':'partner_id'}"/>
+                    <filter string="Product" name="Product" context="{'group_by':'product_id'}"/>
+                    <filter string="Product Category" name="Category" context="{'group_by':'categ_id'}"/>
+                    <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                    <filter string="Company" name="company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
+                    <separator/>
+                    <filter string="Order Date" name="date" context="{'group_by':'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_sale_report_action" model="ir.actions.act_window">
+        <field name="name">Sales Report</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">pivot</field>
+        <field name="search_view_id" ref="view_sale_order_search"/>
+        <field name="domain">[('state','in',('sale', 'done'))]</field>
+        <field name="context">	{'pivot_measures': ['product_uom_qty', 'qty_delivered', 'qty_invoiced', 'rem_delivery_qty', 'rem_invoice_amount','delivered_amount'], 'pivot_column_groupby': ['team_id'], 'pivot_row_groupby': ['partner_id', 'name'],'search_default_this_month':1}</field>
+    </record>
+
+    <menuitem id="menu_sale_report"
+            name="Sales Report"
+            action="view_sale_report_action"
+            parent="sale.menu_sale_report"
+            sequence="2"/>
+</odoo>

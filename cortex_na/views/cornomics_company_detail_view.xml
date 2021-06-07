@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="cornomics_company_detail_form" model="ir.ui.view">
+            <field name="name">cornomics.company.form</field>
+            <field name="model">cornomics.company</field>
+            <field name="arch" type="xml">
+                <form string="Cornomics Company Detail">
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="cornomics_company_tree_view" model="ir.ui.view">
+            <field name="name">cornomics.company.tree</field>
+            <field name="model">cornomics.company</field>
+            <field name="arch" type="xml">
+                <tree string="Cornomics Company">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="cornomics_company_search_view" model="ir.ui.view">
+            <field name="name">cornomics.company.search</field>
+            <field name="model">cornomics.company</field>
+            <field name="arch" type="xml">
+                <search string="Search Company">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="cornomics_company_action" model="ir.actions.act_window">
+            <field name="name">Cornomics Company</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cornomics.company</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="view_id" eval="False"/>-->
+        </record>
+
+        <!-- sale.sale_menu_root -->
+        <menuitem id="menu_sale_config_cornomics"
+            name="Cornomics Configuration"
+            parent="sale.menu_sale_config"
+            sequence="8"/>
+
+        <menuitem id="menu_cornomics"
+            name="Cornomics"
+            parent="menu_sale_config_cornomics"
+            sequence="1"/>
+
+
+        <menuitem action="cornomics_company_action"
+            name="Company"
+            id="menu_cornomics_company_action"
+            parent="menu_cornomics"
+            sequence="1"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_cost_knife_pivot" model="ir.ui.view">
+         <field name="name">sales.cost.knife.pivot</field>
+         <field name="model">sales.cost.knife</field>
+         <field name="arch" type="xml">
+             <pivot string="Sales and Cost by Knife" disable_linking="True">
+                 <field name="product_id" type="row"/>
+                 <field name="date" interval="month" type="col"/>
+                 <field name="product_uom_qty" type="measure"/>
+                 <field name="avg_cost" type="measure"/>
+                 <field name="avg_cost_inch" type="measure"/>
+                 <field name="avg_price" type="measure"/>
+                 <field name="price_average" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_sale_cost_knife_search" model="ir.ui.view">
+        <field name="name">sales.cost.knife.search</field>
+        <field name="model">sales.cost.knife</field>
+        <field name="arch" type="xml">
+            <search string="Sales and Cost by Knife">
+                <field name="date"/>
+                <filter string="This Month" name="this_month" domain="[('date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date','&gt;=',time.strftime('%%Y-%%m-01'))]" />
+                <filter string="Last Month" name="last_month" domain="['&amp;', ('date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date', '&lt;', context_today().strftime('%%Y-%%m-01'))]"/>
+                <filter string="Last Quarter" name="last_quarter" domain="[('date', '&gt;=', (context_today() + relativedelta(months=-3)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[('date','&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),('date','&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59))]"/>
+                <filter name="yesterday" string="Yesterday" domain="[
+                    ('date','&gt;=', (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(1))),
+                    ('date','&lt;=', (datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59) - datetime.timedelta(1)))]"/>
+                <separator/>
+                <filter string="Date" name="year" invisible="1" date="date" default_period="this_year"/>
+                <filter name="Quotations" string="Quotations" domain="[('state','in', ('draft','sent'))]"/>
+                <filter name="Sales" string="Sales Orders" domain="[('state','not in',('draft', 'cancel', 'sent'))]"/>
+                <separator/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Customer" name="Customer" context="{'group_by':'partner_id'}"/>
+                    <filter string="Product" name="Product" context="{'group_by':'product_id'}"/>
+                    <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                    <separator/>
+                    <filter string="Order Date" name="date" context="{'group_by':'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sale_cost_knife" model="ir.actions.act_window">
+        <field name="name">Sale and Cost by Knife</field>
+        <field name="res_model">sales.cost.knife</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_sale_cost_knife_pivot"/> <!-- force empty -->
+        <field name="search_view_id" ref="view_sale_cost_knife_search"/>
+        <field name="context">{'search_default_this_month':1}</field>
+    </record>
+
+    <menuitem id="menu_sale_cost_knife"
+            name="Sale and Cost by Knife"
+            action="action_sale_cost_knife"
+            parent="sale.menu_sale_report"
+            sequence="4"/>
+</odoo>

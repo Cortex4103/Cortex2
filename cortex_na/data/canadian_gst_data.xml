@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="alberta_gst" model="canadian.gst">
+            <field name="name">Alberta</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Alberta')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="northwest_territories_gst" model="canadian.gst">
+            <field name="name">Northwest Territories</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Northwest Territories')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="nunavut_gst" model="canadian.gst">
+            <field name="name">Nunavut</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Nunavut')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="yukon_gst" model="canadian.gst">
+            <field name="name">Yukon</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Yukon')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="saskatchewan_gst" model="canadian.gst">
+            <field name="name">Saskatchewan</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Saskatchewan')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="manitoba_gst" model="canadian.gst">
+            <field name="name">Manitoba</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Manitoba')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="british_columbia_gst" model="canadian.gst">
+            <field name="name">British Columbia</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','British Columbia')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="quebec_gst" model="canadian.gst">
+            <field name="name">Quebec</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Quebec')]" />
+            <field name="sale_gst">5</field>
+            <field name="purchase_gst">5</field>
+        </record>
+
+        <record id="new_brunswick_gst" model="canadian.gst">
+            <field name="name">New Brunswick</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','New Brunswick')]" />
+            <field name="sale_gst">15</field>
+            <field name="purchase_gst">15</field>
+        </record>
+
+        <record id="newfoundland_labrador_gst" model="canadian.gst">
+            <field name="name">Newfoundland and Labrador</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Newfoundland and Labrador')]" />
+            <field name="sale_gst">15</field>
+            <field name="purchase_gst">15</field>
+        </record>
+
+        <record id="nova_scotia_gst" model="canadian.gst">
+            <field name="name">Nova Scotia</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Nova Scotia')]" />
+            <field name="sale_gst">15</field>
+            <field name="purchase_gst">15</field>
+        </record>
+
+        <record id="ontario_gst" model="canadian.gst">
+            <field name="name">Ontario</field>
+            <field name="state_id" model="res.country.state" search="[('name','ilike','Ontario')]" />
+            <field name="sale_gst">13</field>
+            <field name="purchase_gst">13</field>
+        </record>
+    </data>
+</odoo>

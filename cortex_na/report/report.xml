@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report 
+        id="report_cornomics_data"
+        string="Cornomics Data"
+        model="cornomics.data"
+        report_type="qweb-pdf"
+        name="cortex_na.report_cornomics"
+        file="cortex_na.report_cornomics"/>
+
+</odoo>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="cornomics_data_form" model="ir.ui.view">
+            <field name="name">cornomics.data.form</field>
+            <field name="model">cornomics.data</field>
+            <field name="arch" type="xml">
+                <form string="Cornomics Data">
+                    <sheet>
+                        <group>
+                            <group>
+                                <center>
+                                    <field name="compititor_company_id" nolabel="1" placeholder="SELECT COMPETITOR COMPANY" required="1"/>
+                                </center>
+                            </group>
+                            <group>
+                                <center>
+                                    <field name="cortex_company_name" nolabel="1" readonly="1"/>
+                                </center>
+                            </group>
+                        </group>
+                        <!--<group>-->
+                        <div>
+                            <field name="company_id" invisible="1" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="cornomics_data_detail_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="competitor_product_id" options="{'no_create':True}" context="{'is_company':parent.compititor_company_id}" required="1"/>
+                                    <field name="estimated_consumption" required="1"/>
+                                    <field name="estimated_price" required="1"/>
+                                    <field name="competitor_total_cost" />
+
+                                    <field name="product_id" required="1"/>
+                                    <field name="cortex_estimated_consumption" required="1"/>
+                                    <field name="price" required="1"/>
+                                    <field name="cortex_total_cost" />
+                                    <field name="cornomics_percent_savings" required="1"/>
+                                </tree>
+                            </field>
+                        </div>
+                        <!--</group>-->
+                        <group>
+                            <group col="4">
+                                <label for="competitor_monthly_op_cost" string="COMPETITOR MONTHLY OPERATING COSTS" colspan="3"/>
+                                <field name="competitor_monthly_op_cost" nolabel="1" />
+                                <label for="competitor_annual_op_cost" string="COMPETITOR ANNUAL OPERATING COSTS" colspan="3"/>
+                                <field name="competitor_annual_op_cost" nolabel="1" />
+                            </group>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="cortex_monthly_op_cost" />
+                                <field name="cortex_annual_op_cost" />
+                                <field name="cortex_annual_saving" />
+                                <field name="cortex_total_agerage_savings" />
+                            </group>
+                        </group>
+
+                        <group>
+                            <group col="4">
+                                <div></div><h2>Assumptions</h2>
+                                <field name="assumption" placeholder="Assumptions" nolabel="1"  required="1" colspan="4"/>
+                            </group>
+                            <group col="4">
+                                <div></div><h2 colspan="3">Competitor ROI</h2>
+                                <label for="competitor_annual_knife_cost" colspan="3"/>
+                                <field name="competitor_annual_knife_cost" nolabel="1" />
+                                <label for="cost_of_new_bases" colspan="3"/>
+                                <field name="cost_of_new_bases" nolabel="1" required="1"/>
+                                <label for="base_consumption_year" colspan="3"/>
+                                <field name="base_consumption_year" nolabel="1" required="1" />
+                                <label for="normal_holder_replacement_cost" colspan="3"/>
+                                <field name="normal_holder_replacement_cost" nolabel="1" />
+                            </group>
+                            <group col="4">
+                                <div></div><h2>Cortex ROI</h2>
+                                <label for="investment_cost" colspan="3"/>
+                                <field name="investment_cost" nolabel="1" required="1" />
+                                <label for="less_normal_holder_replacement_cost" colspan="3"/>
+                                <field name="less_normal_holder_replacement_cost" nolabel="1" />
+                                <label for="total_investment" colspan="3"/>
+                                <field name="total_investment" nolabel="1" />
+                                <label for="annual_savings_with_cortex" colspan="3"/>
+                                <field name="annual_savings_with_cortex" nolabel="1" />
+                                <label for="indirect_savings_with_cortex" colspan="3"/>
+                                <field name="indirect_savings_with_cortex" nolabel="1" />
+                            </group>
+                            <group col="4">
+                                <div></div><h2 colspan="3">Cortex ROI Benefits</h2>
+                                <label for="grinding_labor_savings" colspan="3"/>
+                                <field name="grinding_labor_savings" nolabel="1" required="1"/>
+                                <label for="knife_change_labor" colspan="3"/>
+                                <field name="knife_change_labor" nolabel="1" required="1"/>
+                                <label for="hourly_labor_cost" colspan="3"/>
+                                <field name="hourly_labor_cost" nolabel="1" required="1" />
+                                <label for="weekly_labor_savings" colspan="3"/>
+                                <field name="weekly_labor_savings" nolabel="1" />
+                                <label for="monthly_labor_savings" colspan="3"/>
+                                <field name="monthly_labor_savings" nolabel="1" />
+                                <label for="indirect_cortex_roi_benefits_total" colspan="3"/>
+                                <field name="indirect_cortex_roi_benefits_total" nolabel="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="cornomics_data_tree_view" model="ir.ui.view">
+            <field name="name">cornomics.data.tree</field>
+            <field name="model">cornomics.data</field>
+            <field name="arch" type="xml">
+                <tree string="Cornomics Data">
+                    <field name="compititor_company_id"/>
+                    <field name="cortex_company_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="cornomics_data_search_view" model="ir.ui.view">
+            <field name="name">cornomics.data.search</field>
+            <field name="model">cornomics.data</field>
+            <field name="arch" type="xml">
+                <search string="Cornomics Data">
+                    <field name="compititor_company_id"/>
+                    <field name="cortex_company_name"/>
+<!--                    <filter string="Archived" name="inactive" domain="[('active', '!=', True)]"/>-->
+<!--                    <group expand="0" string="Group By...">-->
+<!--                        <filter string="Sawmill" name="partner" domain="[]" context="{'group_by': 'partner_id'}"/>-->
+<!--                        <filter string="Machine Center" name="machine_center" domain="[]" context="{'group_by': 'machine_center_id'}"/>-->
+<!--                        <filter string="Brand" name="brand" domain="[]" context="{'group_by': 'brand_id'}"/>-->
+<!--                        <filter string="Knife" name="product" domain="[]" context="{'group_by': 'product_id'}"/>-->
+<!--                    </group>-->
+               </search>
+            </field>
+        </record>
+
+        <record id="cornomics_data_action" model="ir.actions.act_window">
+            <field name="name">Cornomics Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cornomics.data</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="cornomics_data_action"
+            id="menu_cornomics_data_action"
+            parent="sale.product_menu_catalog"
+            sequence="12"/>
+    </data>
+</odoo>

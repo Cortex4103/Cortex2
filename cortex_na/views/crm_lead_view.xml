@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <field name="planned_revenue" position="attributes">
+               <attribute name="options">{'currency_field': 'company_currency','field_digits': True}</attribute>
+            </field>
+            <xpath expr="//group/group[1]/field[@name='partner_id']" position="attributes">
+                <attribute name="widget"/>
+               <attribute name="domain">['|',('is_company','=',True),('is_company','=',False),('parent_id','=',False),('customer_rank','>',0)]</attribute>
+            </xpath>
+            <xpath expr="//group/group[2]/field[@name='partner_id']" position="attributes">
+                <attribute name="widget"/>
+                <attribute name="domain">['|',('is_company','=',True),('is_company','=',False),('parent_id','=',False),('customer_rank','>',0)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quick_create_opportunity_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.quick_create</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="model">crm.lead</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+             <field name="planned_revenue" position="attributes">
+               <attribute name="options">{'currency_field': 'company_currency','field_digits': True}</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="widget"/>
+                <attribute name="domain">['|',('is_company','=',True),('is_company','=',False),('parent_id','=',False),('customer_rank','>',0)]</attribute>
+            </field>
+        </field>
+    </record>
+
+     <record id="custom_res_partner_action_customer" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1, 'search_default_type_company': 1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new customer in your address book
+              </p><p>
+                Odoo helps you easily track all activities related to a customer.
+              </p>
+            </field>
+        </record>
+
+    <menuitem id="crm.res_partner_menu_customer"
+            name="Customers"
+            parent="crm.crm_menu_sales"
+            action="custom_res_partner_action_customer"
+            sequence="5"/>
+
+</odoo>

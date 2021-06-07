@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--   Design Type Views and Action  -->
+<!--        <record id="cash_flow_report_form_view" model="ir.ui.view">-->
+<!--            <field name="name">Cash Flow Statement</field>-->
+<!--            <field name="model">cash.flow.report</field> &lt;!&ndash;cash.flow.report&ndash;&gt;-->
+<!--            <field name="type">form</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form create="false" edit="false">-->
+<!--                    <sheet string="Cash Flow Statement">-->
+<!--                        <group>-->
+<!--                            <group>-->
+<!--                                <field name="period_days" groups="base.group_no_one"/>-->
+<!--                                <field name="date_duration" groups="base.group_no_one"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <footer>-->
+<!--                            <button string="View" class="oe_highlight" type="object" name="prepare_report_aged_partner_balance"/>-->
+<!--                            <button string="Print" class="oe_highlight" type="object" name="action_print_cash_flow_report" invisible="1"/>-->
+<!--                            <button string="Cancel" class="btn-default" special="cancel"/>-->
+<!--                        </footer>-->
+<!--                    </sheet>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record model="ir.actions.act_window" id="action_cash_flow_report" >
+            <field name="name">Cash Flow Statement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report_cashflow_cortex_na_template</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_cash_flow_report_server" model="ir.actions.server">
+            <field name="name">Cash Flow Statement</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_report_cashflow_cortex_na_template"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.prepare_report_aged_partner_balance()
+            </field>
+        </record>
+
+        <menuitem id="account_reports.menu_action_account_report_cash_flow" name="Cash Flow Statement" action="cortex_na.action_cash_flow_report_server" parent="account.account_reports_legal_statements_menu" groups="account.group_account_user"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_invoice_form_custom" model="ir.ui.view">
+            <field name="name">account.payment.invoice.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position='replace'></xpath>
+                <xpath expr="//div[@name='button_box']" position='replace'></xpath>
+                <group name="partner_group" position="replace">
+                    <group name="partner_group">
+                        <field name="payment_type" widget="radio" invisible="context.get('active_model') in ['account.move', 'purchase.order']"/>
+                        <field name="partner_type" widget="selection" attrs="{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))]}" invisible="context.get('active_model') in ['account.move', 'purchase.order']"/>
+                        <field name="partner_id" attrs="{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))]}" context="{'default_is_company': True}" />
+                        <field name="company_id" groups="base.group_multi_company" required="1" invisible="context.get('active_model') in ['account.move', 'purchase.order']"/>
+                    </group>
+                </group>
+                <xpath expr="//sheet" position='after'>
+                    <footer>
+                        <field name="state" invisible="1"/>
+                        <button string='Validate' name="post" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

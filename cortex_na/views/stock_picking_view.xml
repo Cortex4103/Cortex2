@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_packing_inherite_from" model="ir.ui.view">
+        <field name="name">view.stock.picking.inherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='carrier_id']" position="replace"/>
+            <xpath expr="//label[@for='carrier_tracking_ref']" position="replace"/>
+            <xpath expr="//div[@name='tracking']" position="replace"/>
+             <xpath expr="//field[@name='origin']" position="after">
+                 <field name="carrier_id" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}" options="{'no_create': True, 'no_open': True}"/>
+                <label for="carrier_tracking_ref"/>
+                <div name="tracking">
+                    <field name="carrier_tracking_ref" class="oe_inline" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}"/>
+                    <button type='object' class="fa fa-arrow-right oe_link" name="cancel_shipment" string="Cancel" attrs="{'invisible':['|','|','|',('carrier_tracking_ref','=',False),('delivery_type','in', ['fixed', 'base_on_rule']),('delivery_type','=',False),('state','not in',('done'))]}"/>
+                </div>
+                 <field name="external_tracking_reference" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                 <label for="shipping_charge" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                 <div name="div_shipping_charges">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="shipping_charge" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                    <span><button type='object'  name="action_add_to_order" string="Add to Order" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/></span>
+                </div>
+             </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_packing_inherite_search" model="ir.ui.view">
+        <field name="name">view.stock.picking.inherit.search</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                 <field name="carrier_id"/>
+                 <field name="carrier_tracking_ref"/>
+             </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="model">stock.picking</field>
+        <field eval="12" name="priority"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm']" position="after">
+                <button name="send_confirmation_email_method" type="object" string="Send By Email"  class="btn-primary" attrs="{'invisible': ['|', ('state', '!=', 'done'), ('picking_type_code', '!=', 'outgoing')]}" context="{'email_configuration': True}"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button name="action_view_purchase_order" class="oe_stat_button" groups="stock.group_stock_user" icon="fa-credit-card" type="object"  attrs="{'invisible': [('purchase_count', '=', 0)]}">
+                    <field string="Purchase Order" name="purchase_count" widget="statinfo" />
+                </button>
+                <button name="action_view_sale_order" class="oe_stat_button" groups="stock.group_stock_user" icon="fa-bar-chart-o" type="object"  attrs="{'invisible': [('sales_count', '=', 0)]}">
+                     <field string="Sale Order" name="sales_count" widget="statinfo" />
+                </button>
+            </div>
+            <xpath expr="//header/button[@name='action_cancel']" position="before">
+                <button name="action_add_sawmill" type="object" string="Add Sawmill" class="oe_highlight" states="draft,assigned,waiting,confirmed"/>
+            </xpath>
+            <button name="button_validate" position="attributes">
+                <attribute name="groups">stock.group_stock_user,cortex_na.group_service_vendor</attribute>
+            </button>
+            <button name="%(stock.act_stock_return_picking)d" position="attributes">
+                <attribute name="groups">stock.group_stock_user</attribute>
+                <attribute name="context">{'allowed_copy':1}</attribute>
+            </button>
+            <xpath expr="//header/button[@name='button_validate'][2]" position="attributes">
+                <attribute name="groups">stock.group_stock_user,cortex_na.group_service_vendor</attribute>
+            </xpath>
+            <button name="action_toggle_is_locked" position="attributes">
+                <attribute name="groups">stock.group_stock_manager,cortex_na.group_service_vendor</attribute>
+            </button>
+            <xpath expr="//header/button[@name='action_toggle_is_locked'][2]" position="attributes">
+                <attribute name="groups">stock.group_stock_manager,cortex_na.group_service_vendor</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="context">{'allowed_copy':1}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate'][hasclass('o_btn_validate')]" position="attributes">
+                <attribute name="context">{'allowed_copy':1}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_form_inherit_sales_vendor" model="ir.ui.view">
+        <field name="name">stock.picking.form.sales.vendor</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="model">stock.picking</field>
+        <field name="groups_id" eval="[(4,ref('cortex_na.group_service_vendor'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create"> false</attribute>
+                <attribute name="delete"> false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_form_inherit_normal_user" model="ir.ui.view">
+        <field name="name">stock.picking.form.normal.user</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="model">stock.picking</field>
+        <field name="groups_id" eval="[(4,ref('stock.group_stock_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create"> true</attribute>
+                <attribute name="delete"> true</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_tree_inherit_sales_vendor" model="ir.ui.view">
+        <field name="name">stock.picking.tree.sales.vendor</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="model">stock.picking</field>
+        <field name="groups_id" eval="[(4,ref('cortex_na.group_service_vendor'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create"> false</attribute>
+                <attribute name="delete"> false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_tree_inherit_normal_user" model="ir.ui.view">
+        <field name="name">stock.picking.tree.normal.user</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="model">stock.picking</field>
+        <field name="groups_id" eval="[(4,ref('stock.group_stock_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create"> true</attribute>
+                <attribute name="delete"> true</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <div class="oe_title" position="replace">
+                    <div class="oe_title">
+                        <div class="o_row row no-gutters d-flex">
+                            <div class="col">
+                                <label for="first_name" class="oe_edit_only"/>
+                                <h1><field name="first_name"  required="1" placeholder="First Name"/></h1>
+                            </div>
+                            <div class="col">
+                                <label for="last_name" class="oe_edit_only"/>
+                                 <h1><field name="last_name" placeholder="Last Name"/></h1>
+                            </div>
+                        </div>
+                        <label for="login" class="oe_edit_only" string="Email Address"/>
+                        <h1><field name="login" placeholder="e.g. admin@gmail.com"/></h1>
+                        <group>
+                            <field name="partner_id" readonly="1" required="0" groups="base.group_no_one"
+                                    attrs="{'invisible': [('id', '=', False)]}"/>
+                        </group>
+                        <field name="name" invisible="1"/>
+                    </div>
+                </div>
+                <group name="messaging" position="before">
+                    <group>
+                        <group name="field_warehouse" string="Warehouse">
+                            <field name="warehouse_id"/>
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

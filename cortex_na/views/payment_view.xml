@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+
+    <record id="cortex_view_account_payment_form_inherited" model="ir.ui.view">
+        <field name="name">account.payment.form.inherited</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account_check_printing.view_account_payment_form_inherited" />
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='check_number']" position="replace"/>
+        </field>
+    </record>
+
+    <record id="view_account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='communication']" position="after">
+                <field name="check_number"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <record id="cortex_view_account_payment_form_inherited" model="ir.ui.view">-->
+<!--            <field name="name">cortex.account.payment.form.inherited</field>-->
+<!--            <field name="model">account.payment</field>-->
+<!--            <field name="inherit_id" ref="account.view_account_payment_form" />-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='check_number']" position="replace">-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='communication']" position="after">-->
+<!--                    <field name="check_number"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--    </record>-->
+
+     <record id="cortex_view_account_payment_form_multi_inherited" model="ir.ui.view">
+            <field name="name">cortex.account.payment.form.multi.inherited</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_form_multi" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_date']" position="after">
+                    <field name="check_number"/>
+                </xpath>
+            </field>
+     </record>
+</data>

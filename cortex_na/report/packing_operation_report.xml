@@ -1,0 +1,21 @@
+<odoo>
+    <template id="report_packing_operation_inherite" inherit_id="stock.report_picking">
+        <xpath expr="//div[@name='div_sched_date']" position="after">
+            <div t-if="o.picking_type_id.code == 'incoming' and o.carrier_id" class="col-auto">
+                <strong>Carrier:</strong>
+                <p t-field="o.carrier_id"/>
+            </div>
+            <div t-if="o.picking_type_id.code == 'internal' and o.carrier_id" class="col-auto">
+                <strong>Carrier:</strong>
+                <p t-field="o.carrier_id"/>
+            </div>
+            <div t-if="o.carrier_tracking_ref" class="col-auto">
+                <strong>Tracking Referance:</strong>
+                <p t-field="o.carrier_tracking_ref"/>
+            </div>
+        </xpath>
+          <p t-field="o.scheduled_date" position="attributes">
+              <attribute name="t-options">{"widget": "date"}</attribute>
+         </p>
+    </template>
+</odoo>

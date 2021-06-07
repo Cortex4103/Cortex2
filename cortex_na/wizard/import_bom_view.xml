@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--form view-->
+        <record id="import_bom_form_view" model="ir.ui.view">
+            <field name="name">import.bom.form.view</field>
+            <field name="model">import.bom</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="upload_document" filename="upload_file_name"/>
+                            <field name="upload_file_name"  invisible="True"/>
+                        </group>
+                        <group>
+                            <a href="/custom_download_file/get_file?model=demo.data.xlsx.report&amp;record_id=&amp;token=&amp;data=&amp;context=" target="_blank">Click here for sample file.</a>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='Import' name="import_bom_data" type="object" class="btn-primary"/>
+
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--menu action-->
+        <record id="import_bom_action" model="ir.actions.act_window">
+            <field name="name">Import BOM</field>
+<!--            <field name="view_type">ir.actions.act_window</field>-->
+            <field name="res_model">import.bom</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Import BOM"
+                  action="import_bom_action"
+                  id="import_bom_menu"
+                  parent="mrp.menu_mrp_bom"
+                  sequence="14"/>
+    </data>
+</odoo>

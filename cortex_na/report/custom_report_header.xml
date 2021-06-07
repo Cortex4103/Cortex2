@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+
+    <template id="invoice_report_inherit" inherit_id="account.report_invoice_document">
+        <div id="qrcode" position="before">
+            <ul class="list-unstyled" t-if="o.type == 'out_invoice'">
+                <li><b>Umpqua Bank</b></li>
+                <li><b>Routing Number :</b> 123205054</li>
+                <li><b>SWIFT Code :</b> UMPQUS6P</li>
+                <li><b>Account Number :</b> 4866651716</li>
+                <li>Please email copy of payment remittance to <b>accounting@cortexna.com</b></li>
+            </ul>
+        </div>
+    </template>
+</odoo>

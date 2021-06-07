@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_landed_cost_form" model="ir.ui.view">
+        <field name="name">stock.landed.cost.form</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="model">stock.landed.cost</field>
+        <field name="arch" type="xml">
+            <field name="picking_ids" position="before">
+                <field name="landed_cost_selection" widget="radio"/>
+                <field name="batch_production_id" attrs="{'invisible':[('landed_cost_selection', '=', 'transfers')], 'readonly': [('state', '=', 'done')]}" domain="[('state', '=', 'confirm')]"/>
+            </field>
+            <field name="picking_ids" position="attributes">
+                <attribute name="attrs">{'invisible':[('landed_cost_selection', '=', 'mo_orders')],'required':[('landed_cost_selection', '=', 'transfers')]}</attribute>
+            </field>
+            <field name="picking_ids" position="after">
+                <field name="mrp_production_ids" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('state', '=', 'done')]"
+                 attrs="{'invisible':[('landed_cost_selection', '=', 'transfers')],'required':[('landed_cost_selection', '=', 'mo_orders')]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="transfer_from_mo" model="ir.ui.view">
+            <field name="name">transfer.from</field>
+            <field name="model">open.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="location_dest_id" required="1" />
+                            <field name="company_id" invisible="1" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_add_transfer_order" context="{'active_id': active_id}" type="object" string="Create" class="btn-primary" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="stock_picking_form_view" model="ir.ui.view">
+            <field name="name">stock.picking.form.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <field name="location_dest_id" position="after">
+                    <field name="batch_id" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

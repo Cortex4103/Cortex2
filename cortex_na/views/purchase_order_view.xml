@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form_inherit_id" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <div class="oe_subtotal_footer_separator oe_inline" position="attributes">
+                <attribute name="class">oe_subtotal_footer_separator oe_inline o_td_label</attribute>
+            </div>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='taxes_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                <field name="qty_rem_received"/>
+                <field name="qty_rem_billed"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                <field name="drawing_no" clss="quote_item_code_td"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree" position="attributes">
+<!--                <attribute name="name">order_line_tree</attribute>-->
+                <attribute name="class">quote_item_code_td</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="replace">
+               <field name="name" widget="section_and_note_text" optional="show" class="quote_item_code_td"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="after">
+                <field name="drawing_no" />
+            </xpath>
+            <field name="amount_untaxed" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="amount_tax" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="notes" position="attributes">
+                <attribute name="placeholder">Notes...</attribute>
+            </field>
+            <field name="picking_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="date_approve" position="after">
+                <field name="expected_date" force_save="1" /><!--attrs="{'readonly': [('payment_term_id', '=', False), ('state','in',('draft','sent','to approve'))]}"-->
+                <field name="advance_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="picking_type_id" domain="[('code','=','incoming'), '|', ('warehouse_id', '=', False), ('warehouse_id.company_id', '=', company_id)]" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/>
+                <field name="show_in_cash_flow"/>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="widget"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="select_sale_order_ids" widget="many2many_tags"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="qty_received_total" invisible="1"/>
+                <field name="qty_billed_total" invisible="1"/>
+            </field>
+            <xpath expr="//button[@name='action_view_invoice'][2]" position="before">
+                <button name="action_advance_payment" string="Advance Payment" type="object" attrs="{'invisible': [('state', 'not in', ('purchase', 'done'))]}"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']/button[@name='action_view_invoice']" position="before">
+                <button name="action_view_advance_payment" class="oe_stat_button" icon="fa-money" type="object"  attrs="{'invisible': [('payment_count', '=', 0)]}">
+                    <field string="Advance Payment" name="payment_count" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.tree</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="expected_date" />
+                <field name="advance_payment" sum="Total Advance"/>
+                <field name="remaining_amount" sum="Total Remai ning"/>
+                <field name="qty_received_total" sum="Total Received"/>
+                <field name="qty_billed_total" sum="Total Billed"/>
+            </field>
+            <field name="state" position="after">
+                <field name="notes" optional="hide" string="Notes"/>
+            </field>
+        </field>
+    </record>
+    <record id="purchase_order_view_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.view.tree</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="expected_date" />
+                <field name="advance_payment" sum="Total Advance"/>
+                <field name="remaining_amount" sum="Total Remaining"/>
+                <field name="qty_received_total" sum="Total Received"/>
+                <field name="qty_billed_total" sum="Total Billed"/>
+                <field name="notes" optional="hide" string="Notes"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_filter_inherit" model="ir.ui.view">
+        <field name="name">request.quotation.select</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="notes" string="Notes"/>
+            </xpath>
+            <xpath expr="//filter[@name='activities_exception']" position="after">
+                <filter string="Show In Case Flow" name="show_in_cash_flow"
+                        domain="[('show_in_cash_flow', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_view_search_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.select</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="notes" string="Notes"/>
+            </xpath>
+            <xpath expr="//filter[@name='activities_exception']" position="after">
+                <filter string="Show In Case Flow" name="show_in_cash_flow"
+                        domain="[('show_in_cash_flow', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+        <field name="context">{'pivot_measures': ['qty_received_total', 'qty_billed_total', 'amount_total'], 'pivot_column_groupby': [], 'pivot_row_groupby': ['partner_id']}	</field>
+        </record>
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="context">{'pivot_measures': ['qty_received_total', 'qty_billed_total', 'amount_total'], 'pivot_column_groupby': [], 'pivot_row_groupby': ['partner_id'], 'quotation_only': True}</field>
+    </record>
+</odoo>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Installed Parts-->
+        <record id="installed_parts_form_view" model="ir.ui.view">
+            <field name="name">installed.parts.form</field>
+            <field name="model">installed.parts</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="active" invisible="1"/>
+
+                        <group>
+                            <group>
+                                <field name="partner_id" required="1"/>
+                                <field name="product_id" required="1"/>
+                                <field name="machine_center_id"/>
+                                <field name="brand_id"/>
+                            </group>
+                            <group>
+                                <field name="installed_knife" required="1"/>
+                                <field name="qty_knife_per_mnth" required="1"/>
+                                <field name="est_conversion_rev"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="installed_parts_tree_view" model="ir.ui.view">
+            <field name="name">installed.parts.tree</field>
+            <field name="model">installed.parts</field>
+            <field name="arch" type="xml">
+                <tree string="Installed Parts">
+                    <field name="partner_id"/>
+                    <field name="machine_center_id"/>
+                    <field name="brand_id"/>
+                    <field name="product_id"/>
+                    <field name="installed_knife"/>
+                    <field name="qty_knife_per_mnth"/>
+                    <field name="est_conversion_rev"/>
+                    <field name="active" widget="boolean_toggle" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="installed_parts_search_view" model="ir.ui.view">
+            <field name="name">installed.parts.search</field>
+            <field name="model">installed.parts</field>
+            <field name="arch" type="xml">
+                <search string="Search Installed Parts">
+                    <field name="partner_id"/>
+                    <field name="machine_center_id"/>
+                    <field name="brand_id"/>
+                    <field name="product_id"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '!=', True)]"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Sawmill" name="partner" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Machine Center" name="machine_center" domain="[]" context="{'group_by': 'machine_center_id'}"/>
+                        <filter string="Brand" name="brand" domain="[]" context="{'group_by': 'brand_id'}"/>
+                        <filter string="Knife" name="product" domain="[]" context="{'group_by': 'product_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="view_installed_parts_pivot" model="ir.ui.view">
+            <field name="name">installed.parts.pivot</field>
+            <field name="model">installed.parts</field>
+            <field name="arch" type="xml">
+                <pivot string="Installed Parts">
+                    <field name="installed_knife" type="measure"/>
+                    <field name="qty_knife_per_mnth" type="measure"/>
+                    <field name="partner_id" type="row"/>
+                    <field name="product_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="installed_parts_action" model="ir.actions.act_window">
+            <field name="name">Installed Parts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">installed.parts</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+<!--        <menuitem action="installed_parts_action"-->
+<!--            id="menu_installed_parts_action"-->
+<!--            parent="sale.product_menu_catalog"-->
+<!--            sequence="10"/>-->
+
+        <!--Machine Center-->
+        <record id="machine_center_form_view" model="ir.ui.view">
+            <field name="name">machine.center.form</field>
+            <field name="model">machine.center</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="machine_center_tree_view" model="ir.ui.view">
+            <field name="name">machine.center.tree</field>
+            <field name="model">machine.center</field>
+            <field name="arch" type="xml">
+                <tree string="Machine Center">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="machine_center_search_view" model="ir.ui.view">
+            <field name="name">machine.center.search</field>
+            <field name="model">machine.center</field>
+            <field name="arch" type="xml">
+                <search string="Search Machine Center">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="machine_center_action" model="ir.actions.act_window">
+            <field name="name">Machine Center</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">machine.center</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="machine_center_action"
+            id="menu_machine_center_action"
+            parent="menu_install_part_action"
+            sequence="1"/>
+
+        <!--Brand Model-->
+        <record id="brand_brand_form_view" model="ir.ui.view">
+            <field name="name">brand.brand.form</field>
+            <field name="model">brand.brand</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="brand_brand_tree_view" model="ir.ui.view">
+            <field name="name">brand.brand.tree</field>
+            <field name="model">brand.brand</field>
+            <field name="arch" type="xml">
+                <tree string="Brand">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="brand_brand_search_view" model="ir.ui.view">
+            <field name="name">brand.brand.search</field>
+            <field name="model">brand.brand</field>
+            <field name="arch" type="xml">
+                <search string="Search Brand">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="brand_brand_action" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">brand.brand</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="brand_brand_action"
+            id="menu_brand_brand_action"
+            parent="menu_install_part_action"
+            sequence="2"/>
+
+    </data>
+</odoo>

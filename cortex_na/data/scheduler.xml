@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="ir_cron_set_name_to_salesperson" model="ir.cron">
+            <field name="name">Scheduler : Set First Name to Salesperson</field>
+            <field name="model_id" ref="model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">
+res_users_data = env['res.users'].search([])
+if res_users_data:
+    for record in res_users_data:
+        record.write({'first_name': record.name})
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="ir_cron_set_payment_term_to_customer" model="ir.cron">
+            <field name="name">Scheduler : Set Payment Terms to Customer</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+res_partner_data = env['res.partner'].search([])
+if res_partner_data:
+    res_partner_data.write({'property_payment_term_id': env.ref('account.account_payment_term_30days').id})
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="ir_cron_set_costing_method_to_product_category" model="ir.cron">
+            <field name="name">Scheduler : Set Costing Method and Inventory Valuation to Product Category</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+product_category_data = env['product.category'].search([])
+if product_category_data:
+    for record in product_category_data:
+        record.write({'property_cost_method': 'fifo', 'property_valuation': 'real_time'})
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="ir_cron_set_customer_complete_address" model="ir.cron">
+            <field name="name">Scheduler : Set Customer Complete Address</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+res_partner_data = env['res.partner'].search([])
+if res_partner_data:
+    res_partner_data.write({'partner_latitude': False, 'partner_longitude': False})
+    res_partner_data._compute_complete_address()
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="ir_cron_set_customer_coordinator" model="ir.cron">
+            <field name="name">Scheduler : Set Latitude and Longitude to Customer</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+partner_coordinator = env['res.partner'].search(['&amp;', '|', ('contact_address_complete', '!=', False), ('partner_latitude', '=', 0), ('partner_longitude', '=', 0)])
+if partner_coordinator:
+    partner_coordinator.geo_localize()
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="ir_cron_set_blank_tax_to_product" model="ir.cron">
+            <field name="name">Scheduler : Set Black Tax to Product</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">
+product_template_obj = env['product.template'].search([])
+if product_template_obj:
+    product_template_obj.write({'taxes_id': False, 'supplier_taxes_id': False})
+sale_order_line_obj = env['sale.order.line'].search([])
+if sale_order_line_obj:
+    sale_order_line_obj.write({'tax_id': False})
+purchase_order_line_obj = env['purchase.order.line'].search([])
+if purchase_order_line_obj:
+    purchase_order_line_obj.write({'taxes_id': False})
+
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+         <record id="ir_cron_set_invocie_policy_to_stockable_product" model="ir.cron">
+            <field name="name">Scheduler :  Set invocie Policy as Invoice on delivery to all the stockable product</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">
+product_template = env['product.template'].search([('type','=','product')])
+if product_template:
+    for record in product_template:
+        record.write({'invoice_policy': 'delivery'})
+            </field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+
+    <record id="ir_cron_set_sale_false_product" model="ir.cron">
+        <field name="name">Scheduler : Set Product Can not Sold</field>
+        <field name="model_id" ref="model_product_product"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_can_not_sold_product()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="ir_cron_create_journal_entry" model="ir.cron">
+        <field name="name">Scheduler : Create Journal Entry</field>
+        <field name="model_id" ref="model_account_move_line"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_create_journal_entry(inventory_adjustment_id=None, journal_id=None, reference=None)</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="ir_cron_set_stock_move_lines_source" model="ir.cron">
+        <field name="name">Scheduler : Set From Qty For Each Stock Move Line</field>
+        <field name="model_id" ref="model_stock_move_line"/>
+        <field name="state">code</field>
+        <field name="code">model.set_stock_move_line_source_loc_qty()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="ir_cron_set_stock_move_lines_dest" model="ir.cron">
+        <field name="name">Scheduler : Set To Qty For Each Stock Move Line</field>
+        <field name="model_id" ref="model_stock_move_line"/>
+        <field name="state">code</field>
+        <field name="code">model.set_stock_move_lines_dest_loc_qty()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="ir_cron_set_wrong_qty_in_stock_move_lines" model="ir.cron">
+        <field name="name">Scheduler : Set Qty From And Qty To False For Each Stock Move Line</field>
+        <field name="model_id" ref="model_stock_move_line"/>
+        <field name="state">code</field>
+        <field name="code">model.fix_wrong_qty_values()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    
+
+    <data noupdate="1">
+        <record id="ir_cron_set_body_mail_message" model="ir.cron">
+            <field name="name">Scheduler : Set Body/Note/Customer in Mail Message</field>
+            <field name="model_id" ref="model_mail_message"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_set_body_mail_message()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="ir_cron_change_saleperson_from_quotation" model="ir.cron">
+            <field name="name">Scheduler : Change Saleperson form Customer, Quatation, Lead/Opportunity</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_change_saleperson()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="ir_cron_cancel_sale_order" model="ir.cron">
+            <field name="name">Scheduler : Cancel the sale order</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">
+                model.cron_action_cancel_sale_order(order_number='S00044')</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="ir_cron_alert_installed_part" model="ir.cron">
+            <field name="name">Scheduler : Alert for installed part stock</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_alert_installed_part()</field>
+            <field name='interval_number'>2</field>
+            <field name='interval_type'>weeks</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <record id="ir_cron_update_installed_part_active" model="ir.cron">
+            <field name="name">Scheduler : Update installed part to active</field>
+            <field name="model_id" ref="model_installed_part_detail"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="state">code</field>
+            <field name="code">model.update_installed_part_active()</field>
+            <field name='interval_number'>12</field>
+            <field name='interval_type'>hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

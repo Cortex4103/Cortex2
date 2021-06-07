@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="related_hq_location" model="ir.config_parameter">
+            <field name="key">cortex_na.product_related_hq_location</field>
+            <field name="value" ref="stock.stock_location_stock"/>
+        </record>
+    </data>
+</odoo>

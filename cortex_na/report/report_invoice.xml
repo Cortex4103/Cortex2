@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cortex_report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//th[@name='th_price_unit']/span" position="replace">
+            <span>Disc. Price</span>
+        </xpath>
+        <xpath expr="//td[@t-if='display_discount']/span" position="replace">
+            <span t-esc="'%0.2f'%line.discounted_price"/>
+        </xpath>
+        <span t-field="line.price_unit" position="replace">
+            <span t-esc="'%0.2f'%line.price_unit"/>
+        </span>
+    </template>
+</odoo>

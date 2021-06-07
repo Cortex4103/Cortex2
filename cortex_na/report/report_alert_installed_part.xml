@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cron_alert_installed_part_report_template">
+        <table class="table table-condensed" >
+            <thead>
+                <tr>
+                    <th style="min-width:80px;"><strong>Part#</strong></th>
+                    <th style="min-width:300px;"><strong>Name</strong></th>
+                    <th style="text-align:right;"><strong>Installed Part</strong></th>
+                    <th style="text-align:right;min-width:100px;"><strong>Qty at HQ</strong></th>
+                    <th style="text-align:right;min-width:150px;"><strong>Qty at other location</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="parts_data" t-as="record" style="page-break-inside: avoid;">
+                    <td>
+                        <t t-esc="record.get('default_code')"/>
+                    </td>
+                    <td>
+                        <t t-esc="record.get('name')"/>
+                    </td>
+                    <td style="text-align:right">
+                        <t t-esc="int(record.get('installed_quantity'))"/>
+                    </td>
+                    <td style="text-align:right">
+                        <t t-esc="int(record.get('hq'))"/>
+                    </td>
+                     <td style="text-align:right">
+                        <t t-esc="int(record.get('other_location'))"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="cron_alert_installed_part_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-if="parts_data">
+                        <div><center><h2>Installed Parts Stock</h2></center></div>
+                        <div class="text-right" style="margin-bottom:15px;">
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %d, %Y')" />
+                        </div>
+                        <t t-call="cortex_na.cron_alert_installed_part_report_template" />
+                    </t>
+                    <t t-else="">
+                        <div class="text-right" style="margin-bottom:15px;">
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %d, %Y')" />
+                        </div>
+                        <div style="text-align:center; font-size:20px">
+                            <strong >No any Installed Parts</strong>
+                        </div>
+                    </t>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </t>
+    </template>
+</odoo>

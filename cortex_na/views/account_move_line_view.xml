@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_line_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.line.tree</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="model">account.move.line</field>
+            <field eval="100" name="priority"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_move_line_out_invoice_type" model="ir.actions.act_window">
+            <field name="name">Invoices Line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.move.line</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('account.view_move_line_tree')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('account.account_move_line_view_kanban')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('account.view_move_line_form')})]"/>
+            <field name="search_view_id" ref="account.view_account_move_line_filter"/>
+            <field name="domain">[("move_id.journal_id.type","=","sale")]</field>
+            <field name="context">{'search_default_sales': 1}</field>
+        </record>
+
+        <menuitem
+                id="menu_action_move_line_out_invoice_type"
+                action="action_move_line_out_invoice_type"
+                parent="account.menu_finance_receivables"
+                sequence="1"  groups="base.group_no_one"/>
+
+        <record id="action_move_line_in_invoice_type" model="ir.actions.act_window">
+            <field name="name">Bills Line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.move.line</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('account.view_move_line_tree')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('account.account_move_line_view_kanban')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('account.view_move_line_form')})]"/>
+            <field name="search_view_id" ref="account.view_account_move_line_filter"/>
+            <field name="domain">[("move_id.journal_id.type","=","purchase")]</field>
+            <field name="context">{'search_default_purchases': 1}</field>
+        </record>
+
+        <menuitem
+            id="menu_action_move_line_in_invoice_type"
+            action="action_move_line_in_invoice_type"
+            parent="account.menu_finance_payables"
+            sequence="1" groups="base.group_no_one"/>
+
+
+        <record id="view_sales_vs_cost_tree" model="ir.ui.view">
+            <field name="name">sale.vs.cost.tree</field>
+            <field name="model">account.move.line</field>
+            <field eval="100" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Sale VS Cost" create="false" edit="false">
+                    <field name="date" optional="show"/>
+                    <field name="move_id" optional="show"/>
+                    <field name="account_id" options="{'no_open': True}" groups="account.group_account_user"/>
+                    <field name="partner_id" optional="show"/>
+                    <field name="ref" optional="show"/>
+                    <field name="name" optional="show"/>
+                    <field name="full_reconcile_id" optional="show"/>
+                    <field name="debit" sum="Total Debit"/>
+                    <field name="credit" sum="Total Credit"/>
+                    <field name="margin" widget="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+         <record id="view_sale_vs_cost_filter" model="ir.ui.view">
+            <field name="name">sale.vs.cost.search</field>
+            <field name="model">account.move.line</field>
+            <field name="arch" type="xml">
+                <search string="Sale VS Cost">
+                    <field name="date"/>
+                    <field name="account_id"/>
+                    <field name="partner_id"/>
+                    <field name="journal_id"/>
+                    <field name="move_id" string="Journal Entry" filter_domain="[
+                        '|', '|', ('move_id.name', 'ilike', self), ('move_id.ref', 'ilike', self), ('move_id.partner_id', 'ilike', self)]"/>
+                    <separator/>
+                    <filter string="Unposted" name="unposted" domain="[('move_id.state', '=', 'draft')]" help="Unposted Journal Items"/>
+                    <filter string="Posted" name="posted" domain="[('move_id.state', '=', 'posted')]" help="Posted Journal Items"/>
+                    <filter string="Account" name="account" domain="[('account_id.user_type_id.name', 'in', ['Cost of Revenue','Expenses','Income'])]" help="Posted Journal Items"/>
+                    <separator/>
+                    <filter string="Sales" name="sales" domain="[('move_id.journal_id.type', '=', 'sale')]" context="{'default_journal_type': 'sale'}"/>
+                    <filter string="Date" name="date" date="date"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Journal Entry" name="group_by_move" domain="[]" context="{'group_by': 'move_id'}"/>
+                        <filter string="Account" name="group_by_account" domain="[]" context="{'group_by': 'account_id'}"/>
+                        <filter string="Partner" name="group_by_partner" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Journal" name="journal" domain="[]" context="{'group_by': 'journal_id'}"/>
+                        <filter string="Date" name="groupby_date" domain="[]" context="{'group_by': 'date'}"/>
+                        <filter string="Product" name="Product" context="{'group_by':'product_id'}"/>
+                        <filter string="Product Category" name="Product Category" context="{'group_by':'categ_id'}"/>
+                    </group>
+                </search>
+            </field>
+         </record>
+
+        <record id="action_sale_vs_cost_moves_all" model="ir.actions.act_window">
+            <field name="context">{'search_default_group_by_move':1,'search_default_posted':1,'export_all_sale_and_cost':1}</field>
+            <field name="name">Sale VS Cost</field>
+            <field name="res_model">account.move.line</field>
+            <field name="domain">[('display_type', 'not in', ('line_section', 'line_note')),("move_id.journal_id.type","=","sale"),("account_id.user_type_id.name","in",('Cost of Revenue','Expenses','Income'))]</field>
+            <field name="view_id" ref="view_sales_vs_cost_tree"/>
+            <field name="search_view_id" ref="view_sale_vs_cost_filter"/>
+            <field name="view_mode">tree,pivot,graph</field>
+        </record>
+
+        <menuitem
+            id="menu_action_sale_vs_cost_moves_all"
+            action="action_sale_vs_cost_moves_all"
+            parent="account.menu_finance_entries_accounting_miscellaneous"
+            sequence="11"/>
+    </data>
+</odoo>

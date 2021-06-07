@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_inherit" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="model">account.move</field>
+            <field name="arch" type="xml">
+                <xpath expr="//span[hasclass('o_form_label')]/field[@name='type']" position="after">
+                    <field name="type" invisible="context.get('bill_refund') != 1" attrs="{'invisible': [('type', '!=', 'entry'), ('state', '!=', 'draft')]}" readonly="0" nolabel="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="after">
+                    <field name="discounted_price" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/form//field[@name='discount']" position="after">
+                    <field name="discounted_price" force_save="1"/>
+                </xpath>
+                <field name="invoice_origin" position="replace"/>
+                <group id="header_right_group" position="inside">
+                    <field name="invoice_origin" string="Source Document" force_save="1"/>
+                </group>
+                <field name="partner_id" position="attributes">
+                    <attribute name="widget"/>
+                    <attribute name="domain">['|',('is_company','=',True),('is_company','=',False),('parent_id','=',False),('customer_rank','>',0)]</attribute>
+                </field>
+                <xpath expr="//group[@id='header_right_group']/field[@name='date']" position="before">
+                    <div class="o_td_label">
+                        <label for="expected_date" string="Expected Payment Date" style="font-weight:bold;" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <label for="expected_date" string="Planned Payment Date" style="font-weight:bold;" attrs="{'invisible': [('type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
+                    </div>
+                    <field name="expected_date" nolabel="1" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_purchase_order" class="oe_stat_button" icon="fa-credit-card" type="object"  attrs="{'invisible': [('purchase_count', '=', 0)]}">
+                        <field string="Purchase Order" name="purchase_count" widget="statinfo" />
+                    </button>
+                    <button name="action_view_sale_order" class="oe_stat_button" icon="fa-bar-chart-o" type="object"  attrs="{'invisible': [('return_count', '=', 0)]}">
+                         <field string="Sale Order" name="return_count" widget="statinfo" />
+                    </button>
+                </xpath>
+                <xpath expr="//div[hasclass('d-flex')]" position="replace">
+                    <div class="d-flex" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}">
+                    <field name="invoice_payment_term_id"
+                           placeholder="Terms"
+                           attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                    <span class="o_form_label mx-3 oe_edit_only"
+                          attrs="{'invisible': ['|', '|', ('invoice_payment_term_id', '!=', False), ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"> or </span>
+                    <field name="invoice_date_due" force_save="1"
+                       placeholder="Date"
+                       attrs="{'invisible': [
+                        ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))],
+                        'readonly':[('state','=','cancel')]
+                        }"/>
+                    </div>
+                </xpath>
+<!--                <field name="invoice_date_due" position="replace">-->
+<!--                    <field name="invoice_date_due" force_save="1"-->
+<!--                       placeholder="Date"-->
+<!--                       attrs="{'invisible': [-->
+<!--                        ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>-->
+<!--                </field>-->
+            </field>
+        </record>
+
+         <record id="view_invoice_tree_inherit" model="ir.ui.view">
+             <field name="name">account.invoice.tree.inherit</field>
+             <field name="model">account.move</field>
+             <field name="inherit_id" ref="account.view_invoice_tree"/>
+             <field name="arch" type="xml">
+                 <field name="invoice_date_due" position="after">
+                     <field name="ref" invisible="context.get('default_type') not in ('in_invoice','out_invoice')"></field>
+                 </field>
+                 <field name="ref" position="after">
+                     <field name="expected_date" string="Expected Payment" invisible="context.get('default_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                     <field name="expected_date" string="Planned Payment Date"  invisible="context.get('default_type') not in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                 </field>
+             </field>
+         </record>
+
+        <record id="account.action_move_in_invoice_type" model="ir.actions.act_window">
+            <field name="domain">[('type', '=', 'in_invoice')]</field>
+        </record>
+
+        <record id="action_move_in_refund_invoice_type" model="ir.actions.act_window">
+            <field name="name">Bill/Refund</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="account.view_invoice_tree"/>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="domain">['|', ('type', '=', 'in_invoice'), ('type', '=', 'in_refund')]</field>
+            <field name="context">{'default_type': 'in_invoice', 'bill_refund':1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a vendor bill
+              </p><p>
+                Create invoices, register payments and keep track of the discussions with your vendors.
+              </p>
+            </field>
+        </record>
+
+<!--        <menuitem id="bill_refund_invoice"-->
+<!--                  name="Bill/Refund"-->
+<!--                  action="action_move_in_refund_invoice_type"-->
+<!--                  parent="account.menu_finance_payables"-->
+<!--                  sequence="1"/>-->
+
+    </data>
+</odoo>

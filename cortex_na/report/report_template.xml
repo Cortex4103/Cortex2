@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_clean_inherit" inherit_id="web.external_layout_clean">
+        <!-- header -->
+        <div class="row mt8" position="replace">
+            <div class="row mt8">
+                <div class="col-11 text-center">
+                    <t t-if="company.phone"><strong>Phone: </strong><span t-field="company.phone"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;</t>
+                    <t t-if="company.email"><strong>Email: </strong><span t-field="company.email"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;</t>
+                    <t t-if="company.website" ><strong>Website: </strong><span t-field="company.website"/></t>
+                </div>
+                <div class="col-1">
+                    <ul t-if="report_type == 'pdf'" class="list-inline pagenumber float-right text-center">
+                        <li class="list-inline-item"><strong><span class="page"/></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="list-unstyled" position="replace">
+            <ul class="list-unstyled">
+
+            </ul>
+        </ul>
+
+        <div class="row" position="replace">
+            <div class="row">
+                <div class="col-2">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                </div>
+                <div class="col-5" name="company_address">
+                    <ul class="list-unstyled">
+                        <strong><li t-if="company.name"><span t-field="company.name"/></li></strong>
+                        <div t-if="company.partner_id.street"><span t-field="company.partner_id.street"/><br/>
+                            <t t-if="company.partner_id.street2"><span t-field="company.partner_id.street2"/></t></div>
+                        <div><span t-field="company.partner_id.city"/>
+                            <span t-field="company.partner_id.state_id.code"/>
+                            <span t-field="company.partner_id.zip"/><br/>
+                            <span >Office Phone </span><span t-field="company.partner_id.phone"/>
+                        </div>
+<!--                        <div t-if="company.partner_id.country_id"><span t-field="company.partner_id.country_id.name"/></div>-->
+                    </ul>
+                </div>
+                <div t-if="doc_model == 'account.move'" class="col-5">
+                    <t t-if="o.type == 'out_invoice'">
+                        <h3 ><span>PLEASE NOTE NEW ADDRESS</span></h3>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="internal_layout" inherit_id="web.internal_layout">
+        <xpath expr="//div[hasclass('header')]/div/div/span" position="replace">
+            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="installed_part_form_view" model="ir.ui.view">
+            <field name="name">installed.part.form</field>
+            <field name="model">installed.part</field>
+            <field name="arch" type="xml">
+                <form string="Machine Part">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="machine_center_id" required="1"/>
+                                <field name="description" required="context.get('picking_view', False)"/>
+                                <field name="partner_id" required="1"/>
+                                <field name="knife_provider_id"/>
+                                <field name="machine_center_oem_id" attrs="{'invisible':[('machine_center_id','=',False)]}" required="context.get('picking_view', False)"/>
+                                <field name="is_drumhead" invisible="1"/>
+                                <field name="is_conicals" invisible="1"/>
+                                <field name="is_chipper" invisible="1"/>
+
+
+                                <field name="knives_per_segment_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_drumhead','!=',True)]}" />
+
+                                <field name="short_knives_per_ea_head_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_conicals','!=',True)]}"/>
+                                <field name="length_of_short_knife_id"  attrs="{'invisible':['|',('machine_center_id','=',False),('is_conicals','!=',True)]}"/>
+
+
+                            </group>
+                            <group>
+                                <field name="length_of_knives_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_drumhead','!=',True)]}"/>
+                                <field name="segment_per_head" attrs="{'invisible':['|',('machine_center_id','=',False),('is_drumhead','!=',True)]}"/>
+                                <field name="spline" attrs="{'invisible':['|',('machine_center_id','=',False),('is_drumhead','!=',True)]}"/>
+
+                                <field name="long_knives_ea_head_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_conicals','!=',True)]}"/>
+                                <field name="length_of_long_knife_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_conicals','!=',True)]}"/>
+
+                                <field name="pockets_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_chipper','!=',True)]}"/>
+                                <field name="length_of_knife_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_chipper','!=',True)]}"/>
+                                <field name="knives_per_pocket_id" attrs="{'invisible':['|',('machine_center_id','=',False),('is_chipper','!=',True)]}"/>
+                                <field name="length_of_pockets" attrs="{'invisible':['|',('machine_center_id','=',False),('is_chipper','!=',True)]}" />
+
+                                <field name="of_head" attrs="{'invisible':['|',('machine_center_id','=',False),('is_chipper','=',True)]}"/>
+                                <field name="date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Installed Part Details">
+                                <field name="installed_part_detail_id" required="1" context="{'default_date': date}">
+                                    <tree editable="bottom">
+                                        <field name="product_id" required="1" />
+                                        <field name="date"/>
+                                        <field name="installed_knife" />
+                                        <field name="head_location_id" attrs="{'column_invisible': [('parent.is_chipper','=',True)]}" />
+                                        <field name="estimated_monthly_consumption" />
+                                        <field name="frequency" required="1"/>
+                                        <field name="installed" force_save="1"/>
+                                    </tree>
+                                    <form string="Batch Details">
+                                        <group>
+                                            <group>
+                                                <field name="product_id" required="1"/>
+                                                <field name="date"/>
+                                                <field name="installed_knife"/>
+                                                <field name="frequency" required="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="head_location_id" attrs="{'invisible': [('parent.is_chipper','=',True)]}" />
+                                                <field name="estimated_monthly_consumption" />
+                                                <field name="installed" force_save="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="installed_part_tree_view" model="ir.ui.view">
+            <field name="name">installed.part.tree</field>
+            <field name="model">installed.part</field>
+            <field name="arch" type="xml">
+                <tree string="Machine Part">
+                    <field name="machine_center_id"/>
+                    <field name="description"/>
+                    <field name="machine_center_oem_id"/>
+                    <field name="partner_id"/>
+                    <field name="knife_provider_id"/>                    
+                    <field name="length_of_short_knife_id"/>
+                    <field name="length_of_long_knife_id" />
+                    <field name="length_of_knives_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="installed_part_search_view" model="ir.ui.view">
+            <field name="name">installed.part.search</field>
+            <field name="model">installed.part</field>
+            <field name="arch" type="xml">
+                <search string="Machine Part">
+                    <field name="machine_center_id"/>
+                    <field name="partner_id"/>
+                    <field name="knife_provider_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" name="status" domain="[]" context="{'group_by': 'machine_center_id'}"/>
+                        <filter string="Sawmill(Customer)" name="swimill" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Machine Center OEM" name="machine_center_oem" domain="[]" context="{'group_by': 'machine_center_oem_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="installed_part_action" model="ir.actions.act_window">
+            <field name="name">Machine Center</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">installed.part</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+               <menuitem action="installed_part_action"
+                id="menu_installed_part"
+                parent="sale.product_menu_catalog"
+                name="Machine Center"
+                sequence="10"/>
+
+
+        <!--    Installed Parts Details-->
+        <record id="installed_part_detail_form_view" model="ir.ui.view">
+            <field name="name">installed.part.detail.form</field>
+            <field name="model">installed.part.detail</field>
+            <field name="arch" type="xml">
+                <form  string="Installed Parts" create="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="product_id" string="Part #"/>
+                                <field name="installed_knife" string="Quantity Installed"/>
+                                <field name="head_location_id"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="estimated_monthly_consumption"/>
+                                <field name="frequency" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="installed_part_detail_tree_view" model="ir.ui.view">
+            <field name="name">installed.part.detail.tree</field>
+            <field name="model">installed.part.detail</field>
+            <field name="arch" type="xml">
+                <tree string="Installed Parts" create="false" edit="false">
+                    <field name="partner_id"/>
+                    <field name="product_id" optional="show"/>
+                    <field name="installed_knife"  string="Quantity Installed"/>
+                    <field name="monthly_consumption_calculate" string="Est. Monthly Consumption"/>
+                    <field name="estimated_annual_consumption" />
+                    <field name="estimated_monthly_knife_inches"/>
+                    <field name="estimated_annual_knife_inches"/>
+                    <field name="frequency"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="installed_part_detail_search_view" model="ir.ui.view">
+            <field name="name">installed.part.detail.search</field>
+            <field name="model">installed.part.detail</field>
+            <field name="arch" type="xml">
+                <search string="Installed Parts">
+                    <field name="product_id" string="Part #"/>
+                    <field name="categ_id"/>
+                    <field name="head_location_id"/>
+                    <filter string="Cortex Customer" name="active" domain="[('installed','=',True)]"/>
+                    <filter string="Prospects" name="inactive" domain="[('installed','=',False)]"/>
+                    <field name="frequency"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Product" name="filter_product" domain="[]" context="{'group_by': 'product_id'}"/>
+                        <filter string="Product Category" name="filter_product_category" domain="[]" context="{'group_by': 'categ_id'}"/>
+                        <filter string="Frequency" name="filter_frequency" domain="[]" context="{'group_by': 'frequency'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="installed_part_detail_action" model="ir.actions.act_window">
+            <field name="name">Installed Part</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">installed.part.detail</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+       <menuitem action="installed_part_detail_action"
+        id="menu_installed_details_part"
+        parent="sale.product_menu_catalog"
+        name="Installed Part"
+        sequence="11"/>
+
+        <menuitem action="installed_part_detail_action"
+        id="menu_installed_details_part_inventory"
+        parent="stock.menu_stock_inventory_control"
+        name="Installed Part"
+        sequence="102"/>
+
+
+    </data>
+</odoo>

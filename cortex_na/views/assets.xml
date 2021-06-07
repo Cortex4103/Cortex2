@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_common" name="tours disabled assets" inherit_id="web.assets_common">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/cortex_na/static/src/js/disable_tour.js"/>
+            <script type="text/javascript" src="/cortex_na/static/src/js/datetime_set.js"/>
+            <script type="text/javascript" src="/cortex_na/static/src/js/map_model.js"/>
+            <script type="text/javascript" src="/cortex_na/static/src/js/form_view.js"/>
+        </xpath>
+    </template>
+
+     <template id="minimal_layout_inherit" inherit_id="web.internal_layout">
+          <div class="article">
+             <link rel='stylesheet' href="/cortex_na/static/src/css/cash_flow_stmt.css"/>
+              <t t-raw="0" />
+          </div>
+    </template>
+
+    <template id="assets_backend" inherit_id="web.assets_backend" active="True">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" href="/cortex_na/static/src/css/field_view.scss"/>
+        </xpath>
+        <xpath expr="." position="inside">
+            <script type="text/javascript"
+                src="/cortex_na/static/src/js/account_financial_report_backend.js"/>
+            <script type="text/javascript"
+                src="/cortex_na/static/src/js/account_financial_report_widget.js"/>
+            <link rel="stylesheet" href="/cortex_na/static/src/css/cash_flow_stmt.css"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="machine_center_oem_form_view" model="ir.ui.view">
+            <field name="name">machine.center.oem.form</field>
+            <field name="model">machine.center.oem</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="machine_center_oem_tree_view" model="ir.ui.view">
+            <field name="name">machine.center.oem.tree</field>
+            <field name="model">machine.center.oem</field>
+            <field name="arch" type="xml">
+                <tree string="Machine Center OEM">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="machine_center_oem_search_view" model="ir.ui.view">
+            <field name="name">machine.center.oem.search</field>
+            <field name="model">machine.center.oem</field>
+            <field name="arch" type="xml">
+                <search string="Search Machine Center OEM">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="machine_center_oem_action" model="ir.actions.act_window">
+            <field name="name">Machine Center OEM</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">machine.center.oem</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem id="menu_install_part_action"
+                  name="Install Parts"
+                  parent="sale.menu_sale_config"
+                  sequence="3"/>
+
+        <menuitem action="machine_center_oem_action"
+                  name="Machine Center OEM"
+            id="menu_machine_center_oem_action"
+            parent="menu_install_part_action"
+            sequence="3"/>
+
+<!--        Length Of Knives-->
+
+        <record id="length_of_knives_form_view" model="ir.ui.view">
+            <field name="name">length.of.knives.form</field>
+            <field name="model">length.of.knives</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="length_of_knives_tree_view" model="ir.ui.view">
+            <field name="name">length.of.knives.tree</field>
+            <field name="model">length.of.knives</field>
+            <field name="arch" type="xml">
+                <tree string="Length Of Knives">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="length_of_knives_search_view" model="ir.ui.view">
+            <field name="name">length.of.knives.search</field>
+            <field name="model">length.of.knives</field>
+            <field name="arch" type="xml">
+                <search string="Search Length Of Knives">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="length_of_knives_action" model="ir.actions.act_window">
+            <field name="name">Length Of Knives</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">length.of.knives</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="length_of_knives_action"
+                  name="Length Of Knives"
+            id="menu_length_of_knives"
+            parent="menu_install_part_action"
+            sequence="4"/>
+
+<!--        Knife Provider-->
+
+        <record id="knife_provider_form_view" model="ir.ui.view">
+            <field name="name">knife.provider.form</field>
+            <field name="model">knife.provider</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="knife_provider_tree_view" model="ir.ui.view">
+            <field name="name">knife.provider.tree</field>
+            <field name="model">knife.provider</field>
+            <field name="arch" type="xml">
+                <tree string="Knife Provider">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="knife_provider_search_view" model="ir.ui.view">
+            <field name="name">knife.provider.search</field>
+            <field name="model">knife.provider</field>
+            <field name="arch" type="xml">
+                <search string="Search Knife Provider">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="knife_provider_action" model="ir.actions.act_window">
+            <field name="name">Knife Provider</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">knife.provider</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="knife_provider_action"
+                  name="Knife Provider"
+            id="menu_knife_provider"
+            parent="menu_install_part_action"
+            sequence="5"/>
+
+<!--        Drumhead Location-->
+
+        <record id="drumhead_location_form_view" model="ir.ui.view">
+            <field name="name">drumhead.location.form</field>
+            <field name="model">drumhead.location</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="drumhead_location_tree_view" model="ir.ui.view">
+            <field name="name">drumhead.location.tree</field>
+            <field name="model">drumhead.location</field>
+            <field name="arch" type="xml">
+                <tree string="Drumhead Location">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="drumhead_location_search_view" model="ir.ui.view">
+            <field name="name">drumhead.location.search</field>
+            <field name="model">drumhead.location</field>
+            <field name="arch" type="xml">
+                <search string="Search Drumhead Location">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="drumhead_location_action" model="ir.actions.act_window">
+            <field name="name">Drumhead Location</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">drumhead.location</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="drumhead_location_action"
+                  name="Drumhead Location"
+            id="menu_drumhead_locationr"
+            parent="menu_install_part_action"
+            sequence="6"/>
+
+<!--        Knife Lengths-->
+
+
+        <record id="knife_length_form_view" model="ir.ui.view">
+            <field name="name">knife.length.form</field>
+            <field name="model">knife.length</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="knife_length_tree_view" model="ir.ui.view">
+            <field name="name">knife.length.tree</field>
+            <field name="model">knife.length</field>
+            <field name="arch" type="xml">
+                <tree string="Knife Lengths">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="knife_length_search_view" model="ir.ui.view">
+            <field name="name">knife.length.search</field>
+            <field name="model">knife.length</field>
+            <field name="arch" type="xml">
+                <search string="Search Knife Lengths">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="knife_length_action" model="ir.actions.act_window">
+            <field name="name">Knife Lengths</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">knife.length</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="knife_length_action"
+                  name="Knife Lengths"
+            id="menu_knife_length"
+            parent="menu_install_part_action"
+            sequence="7"/>
+
+<!--        Number-->
+
+        <record id="numbers_form_view" model="ir.ui.view">
+            <field name="name">numbers.form</field>
+            <field name="model">numbers</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="numbers_tree_view" model="ir.ui.view">
+            <field name="name">numbers.tree</field>
+            <field name="model">numbers</field>
+            <field name="arch" type="xml">
+                <tree string="Numbers">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="numbers_search_view" model="ir.ui.view">
+            <field name="name">numbers.search</field>
+            <field name="model">numbers</field>
+            <field name="arch" type="xml">
+                <search string="Search Numbers">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="numbers_action" model="ir.actions.act_window">
+            <field name="name">Numbers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">numbers</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="numbers_action"
+                  name="Numbers"
+            id="menu_numbers"
+            parent="menu_install_part_action"
+            sequence="8"/>
+
+<!--        Knives Per Segment-->
+
+        <record id="knives_per_segment_form_view" model="ir.ui.view">
+            <field name="name">knives.per.segment.form</field>
+            <field name="model">knives.per.segment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="knives_per_segment_tree_view" model="ir.ui.view">
+            <field name="name">knives.per.segment.tree</field>
+            <field name="model">knives.per.segment</field>
+            <field name="arch" type="xml">
+                <tree string="Knives Per Segment">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="knives_per_segment_search_view" model="ir.ui.view">
+            <field name="name">knives.per.segment.search</field>
+            <field name="model">knives.per.segment</field>
+            <field name="arch" type="xml">
+                <search string="Search Knives Per Segment">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="knives_per_segment_action" model="ir.actions.act_window">
+            <field name="name">Knives Per Segment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">knives.per.segment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="knives_per_segment_action"
+                  name="Knives Per Segment"
+            id="menu_knives_per_segment"
+            parent="menu_install_part_action"
+            sequence="9"/>
+
+
+<!--        #/Head-->
+
+        <record id="head_form_view" model="ir.ui.view">
+            <field name="name">head.form</field>
+            <field name="model">head</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="head_tree_view" model="ir.ui.view">
+            <field name="name">head.tree</field>
+            <field name="model">head</field>
+            <field name="arch" type="xml">
+                <tree string="#/Head">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="head_search_view" model="ir.ui.view">
+            <field name="name">head.search</field>
+            <field name="model">head</field>
+            <field name="arch" type="xml">
+                <search string="Search #/Head">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="head_action" model="ir.actions.act_window">
+            <field name="name">#/Head</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">head</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="head_action"
+                  name="#/Head"
+            id="menu_head"
+            parent="menu_install_part_action"
+            sequence="10"/>
+
+<!--        # of Heads-->
+
+        <record id="of_head_form_view" model="ir.ui.view">
+            <field name="name">of.head.form</field>
+            <field name="model">of.head</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="of_head_tree_view" model="ir.ui.view">
+            <field name="name">of.head.tree</field>
+            <field name="model">of.head</field>
+            <field name="arch" type="xml">
+                <tree string="# of Heads">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="of_head_search_view" model="ir.ui.view">
+            <field name="name">of.head.search</field>
+            <field name="model">of.head</field>
+            <field name="arch" type="xml">
+                <search string="Search # of Heads">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="of_head_action" model="ir.actions.act_window">
+            <field name="name"># of Heads</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">of.head</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="of_head_action"
+                  name="# of Heads"
+            id="menu_of_head"
+            parent="menu_install_part_action"
+            sequence="11"/>
+
+<!--        Shifts/Edge-->
+
+        <record id="shifts_edge_form_view" model="ir.ui.view">
+            <field name="name">shifts.edge.form</field>
+            <field name="model">shifts.edge</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="shifts_edge_tree_view" model="ir.ui.view">
+            <field name="name">shifts.edge.tree</field>
+            <field name="model">shifts.edge</field>
+            <field name="arch" type="xml">
+                <tree string="Shifts/Edge">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="shifts_edge_search_view" model="ir.ui.view">
+            <field name="name">shifts.edge.search</field>
+            <field name="model">shifts.edge</field>
+            <field name="arch" type="xml">
+                <search string="Search Shifts/Edge">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="shifts_edge_action" model="ir.actions.act_window">
+            <field name="name">Shifts/Edge</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">shifts.edge</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="shifts_edge_action"
+                  name="Shifts/Edge"
+            id="menu_shifts_edge"
+            parent="menu_install_part_action"
+            sequence="12"/>
+
+<!--        # of Shifts-->
+
+        <record id="of_shifts_form_view" model="ir.ui.view">
+            <field name="name">of.shifts.form</field>
+            <field name="model">of.shifts</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="of_shifts_tree_view" model="ir.ui.view">
+            <field name="name">of_shifts.tree</field>
+            <field name="model">of.shifts</field>
+            <field name="arch" type="xml">
+                <tree string="# of Shifts">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="of_shifts_search_view" model="ir.ui.view">
+            <field name="name">of.shifts.search</field>
+            <field name="model">of.shifts</field>
+            <field name="arch" type="xml">
+                <search string="Search # of Shifts">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="of_shifts_action" model="ir.actions.act_window">
+            <field name="name"># of Shifts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">of.shifts</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="of_shifts_action"
+                  name="# of Shifts"
+            id="menu_of_shifts"
+            parent="menu_install_part_action"
+            sequence="13"/>
+
+<!--        Days-->
+
+        <record id="days_form_view" model="ir.ui.view">
+            <field name="name">days.form</field>
+            <field name="model">days</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="days_tree_view" model="ir.ui.view">
+            <field name="name">days.tree</field>
+            <field name="model">days</field>
+            <field name="arch" type="xml">
+                <tree string="Days">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="days_search_view" model="ir.ui.view">
+            <field name="name">days.search</field>
+            <field name="model">days</field>
+            <field name="arch" type="xml">
+                <search string="Search Days">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+
+        <record id="days_action" model="ir.actions.act_window">
+            <field name="name">Days</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">days</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+        </record>
+
+        <menuitem action="days_action"
+                  name="Days"
+            id="menu_days"
+            parent="menu_install_part_action"
+            sequence="13"/>
+
+
+    </data>
+</odoo>

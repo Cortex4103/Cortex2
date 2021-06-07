@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="brand_k_solid_5_5" model="brand.brand">
+            <field name="name">K-Solid 5.5 </field>
+        </record>
+
+        <record id="brand_cae" model="brand.brand">
+            <field name="name">CAE</field>
+        </record>
+
+        <record id="brand_cortex_cns" model="brand.brand">
+            <field name="name">Cortex CNS (or Drum)</field>
+        </record>
+
+        <record id="brand_cortex_solid" model="brand.brand">
+            <field name="name">Cortex Solid</field>
+        </record>
+
+        <record id="brand_hy2" model="brand.brand">
+            <field name="name">HY2</field>
+        </record>
+
+        <record id="brand_ig_3_30" model="brand.brand">
+            <field name="name">IG 3.30</field>
+        </record>
+
+        <record id="brand_ig_powerhead" model="brand.brand">
+            <field name="name">IG Powerhead</field>
+        </record>
+
+        <record id="brand_k_bolt_on_9" model="brand.brand">
+            <field name="name">K-Bolt On 9.0</field>
+        </record>
+
+        <record id="brand_lndx_conical" model="brand.brand">
+            <field name="name">LNDX CONICAL</field>
+        </record>
+
+        <record id="brand_morbark" model="brand.brand">
+            <field name="name">Morbark</field>
+        </record>
+
+        <record id="brand_nicolson" model="brand.brand">
+            <field name="name">Nicolson</field>
+        </record>
+
+        <record id="brand_k_solid_7_75" model="brand.brand">
+            <field name="name">K-Solid 7.75</field>
+        </record>
+
+        <record id="brand_k_bolt_on_7_75" model="brand.brand">
+            <field name="name">K-Bolt On 7.75</field>
+        </record>
+
+        <record id="brand_profiler" model="brand.brand">
+            <field name="name">Profiler</field>
+        </record>
+
+        <record id="brand_spline" model="brand.brand">
+            <field name="name">Spline</field>
+        </record>
+
+        <record id="brand_lndx_6_76" model="brand.brand">
+            <field name="name">LNDX 6.76</field>
+        </record>
+
+        <record id="brand_lndx_2_12" model="brand.brand">
+            <field name="name">LNDX 2.12</field>
+        </record>
+
+        <record id="brand_ig_2_76" model="brand.brand">
+            <field name="name">IG 2.76</field>
+        </record>
+
+        <record id="brand_ig_2_12" model="brand.brand">
+            <field name="name">IG 2.12</field>
+        </record>
+
+        <record id="brand_peterson" model="brand.brand">
+            <field name="name">Peterson</field>
+        </record>
+
+        <record id="brand_truflow" model="brand.brand">
+            <field name="name">TruFlow</field>
+        </record>
+
+    </data>
+</odoo>

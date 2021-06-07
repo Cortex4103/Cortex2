@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="batch_production_form_view_inherit" model="ir.ui.view">
+            <field name="name">batch.production.form</field>
+            <field name="model">batch.production</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_draft" attrs="{'invisible': [('state', '!=', 'cancel')]}" string="Set to Draft" type="object" />
+                        <button name="action_confirm" attrs="{'invisible': [('state', '!=', 'draft')]}" string="Confirm" type="object" class="oe_highlight" />
+                        <button name="action_cancel" attrs="{'invisible': [('state', '!=', 'confirm')]}" string="Cancel" type="object" />
+                        <button name="action_transfer_from_batch_order" attrs="{'invisible': ['|', ('state', '!=', 'confirm'),('isTransfer', '==', 'true')]}" type="object" string="Create Transfer" class="oe_highlight" />
+                        <button name="action_batch_from_batch_order" attrs="{'invisible': [('state', '!=', 'confirm')]}" type="object" string="Create Next Batch" />
+                        <button name="action_distribute_cost" attrs="{'invisible': ['|','|', '|',('state', '!=', 'confirm'),('distribution_type','=', 'specific'),('distribution_type','=', False), ('purchase_order_id', '=', False)]}" type="object" string="Distribute Cost" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_internal_transfer" icon="fa-truck" class="oe_stat_button" string="Transfer Orders" attrs="{'invisible': [('isTransfer', '!=', 'true')]}" type="object" />
+                            <button name="action_open_landed_cost" icon="fa-plus-square" class="oe_stat_button" string="Landed Cost" type="object" states="confirm" />
+                            <button name="action_open_mo" icon="fa-wrench" class="oe_stat_button" string="Manufacturing Orders" type="object" states="confirm" />
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="batch_number" placeholder="Batch NO" nolabel="1" readonly="1" force_save="1" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="mrp_type" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="isTransfer" invisible="1" />
+                                <field name="grade" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('mrp_type','=', 'conversion')]}" />
+                                <field name="size" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('mrp_type','=', 'conversion')]}" />
+                                <field name="distribution_type" attrs="{'readonly': [('state', '=', 'cancel')],'invisible': [('state', '!=', 'confirm')],'required': [('purchase_order_id', '!=', False)]}" />
+                                <field name="purchase_order_id" domain="[('state', '!=', 'cancel')]" context="{'partner_id':partner_id, 'default_partner_id': partner_id}" attrs="{'readonly': [('state', '=', 'cancel')],'invisible': [('state', '!=', 'confirm')]}" />
+                                <field name="picking_type_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                            <group>
+                                <field name="per_inch" required="1" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('mrp_type','=', 'conversion')]}" />
+                                <field name="total_weight" required="1" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('mrp_type','=', 'conversion')]}" />
+                                <field name="profile_cost" required="1" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('mrp_type','=', 'conversion')]}" />
+                                <field name="service_cost" required="1" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('mrp_type','=', 'conversion')]}" />
+                                <field name="weight_loss" attrs="{'invisible': [('mrp_type','=', 'conversion')]}" />
+                            </group>
+                        </group>
+                        <field name="currency_id" invisible="1" />
+                        <notebook>
+                            <page string="Batch Details">
+                                <field name="batch_detail_ids" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'default_batch_production_id': active_id}">
+                                    <tree editable="bottom">
+                                        <field name="batch_production_id" invisible="1" />
+                                        <field name="per_inch" invisible="1" />
+                                        <field name="product_id" domain="[('type', '=', 'product')]" required="1" />
+                                        <field name="bom_id" context="{'default_product_tmpl_id': product_id}" required="1" domain="[('product_tmpl_id.product_variant_ids', '=', product_id)]" />
+                                        <field name="input_product_id" force_save="1" />
+                                        <field name="quantity" required="1" />
+                                        <field name="p_length" />
+                                        <field name="profile_weight" attrs="{'column_invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                        <field name="qty_kg" attrs="{'column_invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                        <field name="profile_cost_per_knife" attrs="{'column_invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                        <field name="service_cost_per_knife" attrs="{'column_invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                        <field name="total_cost_per_knife" attrs="{'column_invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                    </tree>
+                                    <form string="Batch Details">
+                                        <group>
+                                            <group>
+                                                <field name="product_id" required="1" />
+                                                <field name="bom_id" required="1" context="{'default_product_tmpl_id': product_id}" />
+                                                <field name="quantity" />
+                                                <field name="input_product_id" force_save="1" />
+                                                <field name="p_length" />
+                                            </group>
+                                            <group>
+                                                <field name="profile_weight" attrs="{'invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                                <field name="qty_kg" attrs="{'invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                                <field name="profile_cost_per_knife" attrs="{'invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                                <field name="service_cost_per_knife" attrs="{'invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                                <field name="total_cost_per_knife" attrs="{'invisible': [('parent.mrp_type', '=', 'conversion')]}" />
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total" attrs="{'invisible': [('mrp_type', '=', 'conversion')]}">
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="total_kg" />
+                                    </div>
+                                    <field name="total_kg" nolabel="1" class="oe_subtotal_footer_separator" />
+                                </group>
+                            </page>
+                            <page string="Service Charges">
+                                <field name="distribution_service_ids" attrs="{'invisible': ['|','|',('state', '!=', 'confirm'),('distribution_type','=', 'specific'),('distribution_type','=', False)]}" context="{'default_batch_production_id': active_id}">
+                                    <tree string="Distribution Service" editable="bottom" create="0">
+                                        <field name="distribution_on" required="1" force_save="1" />
+                                        <field name="product_id" required="1" readonly="1" force_save="1" />
+                                        <field name="price_unit" readonly="1" force_save="1"  />
+                                        <field name="product_uom_id" readonly="1" force_save="1" />
+                                        <field name="quantity" readonly="1" force_save="1"/>
+                                        <field name="batch_production_id" invisible="1" />
+                                        <field name="subtotal" />
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" attrs="{'invisible': ['|','|',('state', '!=', 'confirm'),('distribution_type','=', 'specific'),('distribution_type','=', False)]}" name="order_total">
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="distribution_service_total" />
+                                    </div>
+                                    <field name="distribution_service_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                                </group>
+                                <field name="service_charge_ids">
+                                    <tree string="Service Charges" editable="bottom" create="0">
+                                        <field name="currency_id" invisible="1" />
+                                        <field name="production_id" options="{'no_create': True, 'no_create_edit':True}" domain="[('batch_production_id','=',parent.id),('state','!=','cancel')]" attrs="{'readonly': [('production_id', '!=', False)]}" force_save="1" />
+                                        <field name="product_id" required="1" readonly="1" force_save="1" />
+                                        <field name="price_unit" />
+                                        <field name="product_uom_id" readonly="1" force_save="1" />
+                                        <field name="quantity" />
+                                        <field name="bom_line_id" invisible="1" />
+                                        <field name="bom_charge_id" invisible="1" />
+                                        <field name="batch_production_id" invisible="1" />
+                                        <field name="subtotal" widget="monetary" readonly="1" force_save="1" options="{'currency_field': 'currency_id'}" />
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="service_charge_total" />
+                                    </div>
+                                    <field name="service_charge_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="batch_production_tree_view" model="ir.ui.view">
+            <field name="name">batch.production.tree</field>
+            <field name="model">batch.production</field>
+            <field name="arch" type="xml">
+                <tree string="Batch Production" decoration-muted="state in ('cancel')">
+                    <field name="batch_number" />
+                    <field name="partner_id" />
+                    <field name="total_weight" />
+                    <field name="grade" />
+                    <field name="size" />
+                    <field name="per_inch" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="batch_production_search_view" model="ir.ui.view">
+            <field name="name">batch.production.search</field>
+            <field name="model">batch.production</field>
+            <field name="arch" type="xml">
+                <search string="Search Production">
+                    <field name="batch_number" />
+                    <field name="partner_id" />
+                    <field name="state" />
+                    <field name="mrp_type" />
+                    <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]" />
+                    <filter string="Confirmed" name="filter_confirmed" domain="[('state', '=', 'confirm')]" />
+                    <filter string="Cancelled" name="filter_cancel" domain="[('state', '=', 'cancel')]" />
+                    <group expand="0" string="Group By...">
+                        <filter string="Vendor" name="partner" domain="[]" context="{'group_by': 'partner_id'}" />
+                        <filter string="Status" name="status" domain="[]" context="{'group_by': 'state'}" />
+                        <filter string="Manufecturing Type" name="m_type" domain="[]" context="{'group_by': 'mrp_type'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="batch_production_action" model="ir.actions.act_window">
+            <field name="name">Batch Production</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">batch.production</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False" />
+        </record>
+
+        <menuitem action="batch_production_action" id="menu_batch_production_action" parent="mrp.menu_mrp_manufacturing" sequence="2" />
+    </data>
+</odoo>

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="length_of_knives_1_25" model="length.of.knives">
+            <field name="name">1.25</field>
+        </record>
+
+        <record id="length_of_knives_1_56" model="length.of.knives">
+            <field name="name">1.56</field>
+        </record>
+
+        <record id="length_of_knives_1_75" model="length.of.knives">
+            <field name="name">1.75</field>
+        </record>
+
+        <record id="length_of_knives_2" model="length.of.knives">
+            <field name="name">2.00</field>
+        </record>
+
+        <record id="length_of_knives_2_62" model="length.of.knives">
+            <field name="name">2.62</field>
+        </record>
+
+        <record id="length_of_knives_2_64" model="length.of.knives">
+            <field name="name">2.64</field>
+        </record>
+
+        <record id="length_of_knives_2_90" model="length.of.knives">
+            <field name="name">2.90</field>
+        </record>
+
+        <record id="length_of_knives_3_30" model="length.of.knives">
+            <field name="name">3.30</field>
+        </record>
+
+        <record id="length_of_knives_3_54" model="length.of.knives">
+            <field name="name">3.54</field>
+        </record>
+
+        <record id="length_of_knives_4_50" model="length.of.knives">
+            <field name="name">4.50</field>
+        </record>
+
+        <record id="length_of_knives_5_50" model="length.of.knives">
+            <field name="name">5.50</field>
+        </record>
+
+        <record id="length_of_knives_5_90" model="length.of.knives">
+            <field name="name">5.90</field>
+        </record>
+
+        <record id="length_of_knives_6_50" model="length.of.knives">
+            <field name="name">6.50</field>
+        </record>
+
+        <record id="length_of_knives_6_78" model="length.of.knives">
+            <field name="name">6.78</field>
+        </record>
+
+        <record id="length_of_knives_7_31" model="length.of.knives">
+            <field name="name">7.31</field>
+        </record>
+
+        <record id="length_of_knives_7_75" model="length.of.knives">
+            <field name="name">7.75</field>
+        </record>
+
+        <record id="length_of_knives_8_78" model="length.of.knives">
+            <field name="name">8.78</field>
+        </record>
+
+        <record id="length_of_knives_9" model="length.of.knives">
+            <field name="name">9.00</field>
+        </record>
+
+        <record id="length_of_knives_9_81" model="length.of.knives">
+            <field name="name">9.81</field>
+        </record>
+
+        <record id="length_of_knives_10" model="length.of.knives">
+            <field name="name">10.00</field>
+        </record>
+
+        <record id="length_of_knives_10_75" model="length.of.knives">
+            <field name="name">10.75</field>
+        </record>
+
+        <record id="length_of_knives_11" model="length.of.knives">
+            <field name="name">11.00</field>
+        </record>
+
+
+<!--        Knife Provider Data-->
+        <record id="knife_provider_cortex" model="knife.provider">
+            <field name="name">Cortex</field>
+        </record>
+
+        <record id="knife_provider_andritz" model="knife.provider">
+            <field name="name">Andritz</field>
+        </record>
+
+        <record id="knife_provider_key_knife" model="knife.provider">
+            <field name="name">Key Knife</field>
+        </record>
+
+        <record id="knife_provider_lindex" model="knife.provider">
+            <field name="name">Lindex</field>
+        </record>
+
+        <record id="knife_provider_truflow" model="knife.provider">
+            <field name="name">TruFlow</field>
+        </record>
+
+        <record id="knife_provider_comact" model="knife.provider">
+            <field name="name">Comact</field>
+        </record>
+
+        <record id="knife_provider_conventional" model="knife.provider">
+            <field name="name">Conventional</field>
+        </record>
+
+<!--        drumhead location data-->
+
+        <record id="drumhead_location_top_head" model="drumhead.location">
+            <field name="name">Top Head</field>
+        </record>
+
+        <record id="drumhead_location_bottom_head" model="drumhead.location">
+            <field name="name">Bottom Head</field>
+        </record>
+
+        <record id="drumhead_location_left_head" model="drumhead.location">
+            <field name="name">Left Head</field>
+        </record>
+
+        <record id="drumhead_location_right_head" model="drumhead.location">
+            <field name="name">Right Head</field>
+        </record>
+
+        <record id="drumhead_location_spline_head" model="drumhead.location">
+            <field name="name">Spline Head</field>
+        </record>
+
+
+<!--        knife length data-->
+
+        <record id="knife_length_2_ke " model="knife.length">
+            <field name="name">2.00 - ke</field>
+        </record>
+
+        <record id="knife_length_2_12_ke" model="knife.length">
+            <field name="name">2.12 - ke</field>
+        </record>
+
+        <record id="knife_length_2_62_cortex" model="knife.length">
+            <field name="name">2.62 - Cortex</field>
+        </record>
+
+        <record id="knife_length_2_62_kehy2" model="knife.length">
+            <field name="name">2.62 - keHY2</field>
+        </record>
+
+        <record id="knife_length_2_90_az" model="knife.length">
+            <field name="name">2.90 - AZ</field>
+        </record>
+
+        <record id="knife_length_3_30_az_drum" model="knife.length">
+            <field name="name">3.30 - AZ Drum</field>
+        </record>
+
+        <record id="knife_length_3_30_1_bolt_az" model="knife.length">
+            <field name="name">3.30 - 1 Bolt AZ</field>
+        </record>
+
+        <record id="knife_length_3_30_2_bolt_az" model="knife.length">
+            <field name="name">3.30 - 2 Bolt AZ</field>
+        </record>
+
+        <record id="knife_length_3_54_chile" model="knife.length">
+            <field name="name">3.54 - Chile</field>
+        </record>
+
+<!--        Numbers-->
+        <record id="numbers_1" model="numbers">
+            <field name="name">1</field>
+        </record>
+
+        <record id="numbers_2" model="numbers">
+            <field name="name">2</field>
+        </record>
+
+        <record id="numbers_3" model="numbers">
+            <field name="name">3</field>
+        </record>
+
+        <record id="numbers_4" model="numbers">
+            <field name="name">4</field>
+        </record>
+
+        <record id="numbers_5" model="numbers">
+            <field name="name">5</field>
+        </record>
+
+        <record id="numbers_6" model="numbers">
+            <field name="name">6</field>
+        </record>
+
+        <record id="numbers_7" model="numbers">
+            <field name="name">7</field>
+        </record>
+
+        <record id="numbers_8" model="numbers">
+            <field name="name">8</field>
+        </record>
+
+        <record id="numbers_9" model="numbers">
+            <field name="name">9</field>
+        </record>
+
+        <record id="numbers_10" model="numbers">
+            <field name="name">10</field>
+        </record>
+
+        <record id="numbers_11" model="numbers">
+            <field name="name">11</field>
+        </record>
+
+        <record id="numbers_12" model="numbers">
+            <field name="name">12</field>
+        </record>
+
+        <record id="numbers_13" model="numbers">
+            <field name="name">13</field>
+        </record>
+
+        <record id="numbers_14" model="numbers">
+            <field name="name">14</field>
+        </record>
+
+        <record id="numbers_15" model="numbers">
+            <field name="name">15</field>
+        </record>
+
+        <record id="numbers_16" model="numbers">
+            <field name="name">16</field>
+        </record>
+
+        <record id="numbers_17" model="numbers">
+            <field name="name">17</field>
+        </record>
+
+        <record id="numbers_18" model="numbers">
+            <field name="name">18</field>
+        </record>
+
+        <record id="numbers_19" model="numbers">
+            <field name="name">19</field>
+        </record>
+
+        <record id="numbers_20" model="numbers">
+            <field name="name">20</field>
+        </record>
+
+<!--        knives per segment-->
+
+        <record id="knives_per_segment_3" model="knives.per.segment">
+            <field name="name">3</field>
+        </record>
+
+        <record id="knives_per_segment_4" model="knives.per.segment">
+            <field name="name">4</field>
+        </record>
+
+        <record id="knives_per_segment_5" model="knives.per.segment">
+            <field name="name">5</field>
+        </record>
+
+        <record id="knives_per_segment_6" model="knives.per.segment">
+            <field name="name">6</field>
+        </record>
+
+        <record id="knives_per_segment_7" model="knives.per.segment">
+            <field name="name">7</field>
+        </record>
+
+        <record id="knives_per_segment_8" model="knives.per.segment">
+            <field name="name">8</field>
+        </record>
+
+        <record id="knives_per_segment_9" model="knives.per.segment">
+            <field name="name">9</field>
+        </record>
+
+        <record id="knives_per_segment_10" model="knives.per.segment">
+            <field name="name">10</field>
+        </record>
+
+
+<!--        Shifts/Edge-->
+
+        <record id="shifts_edge_0" model="shifts.edge">
+            <field name="name">0</field>
+        </record>
+
+        <record id="shifts_edge_1" model="shifts.edge">
+            <field name="name">1</field>
+        </record>
+
+        <record id="shifts_edge_2" model="shifts.edge">
+            <field name="name">2</field>
+        </record>
+
+        <record id="shifts_edge_3" model="shifts.edge">
+            <field name="name">3</field>
+        </record>
+
+        <record id="shifts_edge_4" model="shifts.edge">
+            <field name="name">4</field>
+        </record>
+
+        <record id="shifts_edge_5" model="shifts.edge">
+            <field name="name">5</field>
+        </record>
+
+        <record id="shifts_edge_6" model="shifts.edge">
+            <field name="name">6</field>
+        </record>
+
+<!--        # of Shifts-->
+
+        <record id="of_shifts_0" model="of.shifts">
+            <field name="name">0</field>
+        </record>
+
+        <record id="of_shifts_1" model="of.shifts">
+            <field name="name">1</field>
+        </record>
+
+        <record id="of_shifts_2" model="of.shifts">
+            <field name="name">2</field>
+        </record>
+
+        <record id="of_shifts_3" model="of.shifts">
+            <field name="name">3</field>
+        </record>
+
+<!--        Days-->
+
+        <record id="days_3" model="days">
+            <field name="name">3</field>
+        </record>
+
+        <record id="days_4" model="days">
+            <field name="name">4</field>
+        </record>
+
+        <record id="days_5" model="days">
+            <field name="name">5</field>
+        </record>
+
+        <record id="days_6" model="days">
+            <field name="name">6</field>
+        </record>
+
+        <record id="days_7" model="days">
+            <field name="name">7</field>
+        </record>
+
+    </data>
+</odoo>

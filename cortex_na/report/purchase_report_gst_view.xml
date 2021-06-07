@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_purchase_order_gst_pivot">
+            <field name="name">purchase.order.gst.report.pivot</field>
+            <field name="model">purchase.report.gst</field>
+            <field name="arch" type="xml">
+                <pivot string="CGST Report">
+                    <field name="date_order" interval="month" type="col"/>
+                    <field name="partner_id" type="row"/>
+                    <field name="untaxed_total" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+    
+        <record id="view_purchase_order_gst_report_search" model="ir.ui.view">
+            <field name="name">purchase.order.gst.report.search</field>
+            <field name="model">purchase.report.gst</field>
+            <field name="arch" type="xml">
+                <search string="CGST Report">
+                    <filter string="This Year" name="this_year"  domain="[('date_order','&lt;=', time.strftime('%%Y-12-31')),('date_order','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                    <separator/>
+                    <filter string="This Month" name="this_month"  domain="[('date_order','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_order','&gt;=',time.strftime('%%Y-%%m-01'))]" />
+                    <filter string="Last Month" name="last_month" domain="['&amp;', ('date_order', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_order', '&lt;', context_today().strftime('%%Y-%%m-01'))]"/>
+                    <separator/>
+                    <filter name="today" string="Today" domain="[('date_order','&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),('date_order','&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59))]"/>
+                    <filter name="yesterday" string="Yesterday" domain="[
+                        ('date_order','&gt;=', (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(1))),
+                        ('date_order','&lt;=', (datetime.datetime.now().replace(hour=23, minute=59, second=50, microsecond=59) - datetime.timedelta(1)))]"/>
+                    <separator/>
+                    <field name="partner_id"/>
+                    <field name="product_id"/>
+                    <group expand="0" string="Extended Filters">
+                        <field name="date_order"/>
+                    </group>
+                    <group expand="1" string="Group By">
+                        <filter string="Vendor" name="group_partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="Product" name="group_product_id" context="{'group_by':'product_id'}"/>
+                        <filter string="Status" name="status" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter string="Order Date" name="order_month" context="{'group_by': 'date_order:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_purchase_report_gst_action" model="ir.actions.act_window">
+            <field name="name">CGST Report</field>
+            <field name="res_model">purchase.report.gst</field>
+            <field name="view_mode">pivot</field>
+            <field name="search_view_id" ref="view_purchase_order_gst_report_search" />
+            <field name="domain">[]</field>
+            <field name="context">{'pivot_measures': ['untaxed_total'], 'pivot_row_groupby': ['partner_id'], 'pivot_column_groupby': ['date_order'], 'search_default_this_month': 1}</field>
+        </record>
+
+        <menuitem id="menu_purchase_report_gst"
+            name="CGST Report" 
+            action="view_purchase_report_gst_action" 
+            parent="purchase.purchase_report" 
+            sequence="3" 
+            groups="purchase.group_purchase_manager" />
+
+    </data>
+</odoo>

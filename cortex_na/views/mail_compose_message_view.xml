@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="email_compose_message_wizard_form_inherited" model="ir.ui.view">
+            <field name="name">mail.compose.message.form</field>
+            <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+            <field name="model">mail.compose.message</field>
+            <field name="arch" type="xml">
+                <field name="template_id" position="after">
+                    <field name="attach_drawing" string="Attach Drawings" widget="boolean_toggle" invisible="context.get('active_model') not in ['purchase.order']"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>                

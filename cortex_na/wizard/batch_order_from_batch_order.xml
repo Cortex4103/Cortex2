@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="batch_order_form_batch_order" model="ir.ui.view">
+            <field name="name">transfer.from</field>
+            <field name="model">batch.order</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="partner_id" required="1" />
+                            <field name="mrp_type" invisible="1" required="1" />
+                            <field name="picking_type_id" required="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Batch Details">
+                            <field name="batch_detail_ids" context="{'default_batch_production_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="batch_production_id" invisible="1" />
+                                    <field name="product_id" domain="[('type', '=', 'product')]" required="1" context="{'input_product': input_product_id}"/>
+                                    <field name="bom_id"  required="1" domain="[('product_tmpl_id.product_variant_ids', '=', product_id)]" />
+                                    <field name="input_product_id" force_save="1"/>
+                                    <field name="quantity" required="1" />
+                                    <field name="p_length" />
+                                </tree>
+                                <form string="Batch Details">
+                                    <group>
+                                        <group>
+                                            <field name="product_id" required="1"/>
+                                            <field name="bom_id" />
+                                            <field name="input_product_id" force_save="1"/>
+                                            <field name="quantity" />
+                                            <field name="p_length" />
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_add_batch_order" context="{'active_id': active_id}" type="object" string="Save" class="btn-primary" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

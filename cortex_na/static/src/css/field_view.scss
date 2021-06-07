@@ -1,0 +1,19 @@
+th.o_section_and_note_text_cell.o_column_sortable {
+    width: 250px !important;
+}
+
+@media (min-width: 576px) {
+    .increase_height {
+        min-height: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    html .o_web_client > .o_action_manager {
+        overflow-y: auto;
+    }
+}
+
+html .o_web_client > .o_action_manager > .o_action > .o_content.custom_class {
+    flex: 0 1 auto !important;
+}

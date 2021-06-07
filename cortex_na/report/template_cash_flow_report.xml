@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_cashflow_cortex_na_template">
+        <div class="o_cortex_reports_page">
+            <t t-call="cortex_na.report_data_cash_flow_main_report_tmp"/>
+        </div>
+    </template>
+
+    <record id="report_cashflow_cortex_na_template_custom" model="ir.actions.client">
+        <field name="name">Cash Flow Statement</field>
+        <field name="tag">account_financial_report_backend</field>
+        <field name="context" eval="{'active_model': 'report_cashflow_cortex_na_template'}"/>
+    </record>
+
+
+    <report
+      id="new_action_to_print_html_cashflow_report_from_wizard"
+      model="report_cashflow_cortex_na_template"
+      string="Cash Flow Statement"
+      report_type="qweb-html"
+      name="cortex_na.report_data_cash_flow_base"
+      file="cortex_na.report_data_cash_flow_base_html"
+
+    />
+
+<!--    <report-->
+<!--      id="new_action_to_print_html_cashflow_report_from_wizard_pdf"-->
+<!--      model="report_cashflow_cortex_na_template"-->
+<!--      string="Cash Flow Statement"-->
+<!--      report_type="qweb-pdf"-->
+<!--      name="cortex_na.report_data_cash_flow_base"-->
+<!--      file="cortex_na.report_data_cash_flow_base"-->
+
+<!--    />-->
+
+<!--    <record id="cash_flow_general_paper_format" model="report.paperformat">-->
+<!--        <field name="name">Cash Flow Paper Format</field>-->
+<!--        <field name="default" eval="True"/>-->
+<!--        <field name="format">custom</field>-->
+<!--        <field name="page_height">297</field>-->
+<!--        <field name="page_width">210</field>-->
+<!--        <field name="orientation">Portrait</field>-->
+<!--        <field name="margin_top">12</field>-->
+<!--        <field name="margin_bottom">8</field>-->
+<!--        <field name="margin_left">5</field>-->
+<!--        <field name="margin_right">5</field>-->
+<!--        <field name="header_line" eval="False"/>-->
+<!--        <field name="header_spacing">10</field>-->
+<!--        <field name="dpi">110</field>-->
+<!--    </record>-->
+
+<!--    <record id="new_action_to_print_html_cashflow_report_from_wizard_pdf"-->
+<!--            model="ir.actions.report">-->
+<!--        <field name="paperformat_id" ref="cash_flow_general_paper_format"/>-->
+<!--    </record>-->
+</odoo>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_cornomics">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">                
+                <t t-call="web.external_layout">                   
+                    <div class="page">
+                        <div class="oe_structure"/> 
+                        <style>
+                            th, td {
+                                padding: 10px;
+                            }
+                            th{
+                                padding-top:15px;
+                                vertical-align:bottom;
+                            }
+                            .text_right{
+                                text-align:right;
+                            }
+                            table{
+                                border-collapse:collapse;
+                            }
+                            table, th, td {
+                                border: 1px solid black;
+                            }
+                            .clearfix {
+                                overflow: auto;
+                            }
+                            .row {
+                                display: inline;
+                                width: 50%;
+                                margin: 0 auto;
+                            }
+                        </style>
+                        <center><h2>CORNOMICS DATA</h2></center><br></br>
+
+                        <table style="page-break-after: always;">
+                            <tr>
+                                <th colspan="4" style="background-color:#FFAB91;text-transform: uppercase;"><span t-field="doc.compititor_company_id"/></th>
+                                <th colspan="6" style="background-color:lightgreen;"><span t-field="doc.cortex_company_name"/></th>
+                            </tr>
+                            <tr style="background-color:lightgray;">
+                                <th>PART DESCRIPTION / EXISTING SYSTEM - BRAND L</th>
+                                <th>ESTIMATED CONSUMPTION PER MONTH</th>
+                                <th>ESTIMATED KNIFE PRICE</th>                                
+                                <th>TOTAL COST</th>
+                                <th>CORTEX PART DESCRIPTION</th>
+                                <th>ESTIMATED CONSUMPTION PER MONTH</th>
+                                <th>PRICE</th>                                
+                                <th>TOTAL COST</th>
+                                <th>SAVINGS</th>
+                            </tr>
+                            <t t-foreach="doc.cornomics_data_detail_line_ids" t-as="o">
+                                <tr>
+                                    <td><span t-field="o.competitor_product_id"/></td>
+                                    <td style="background-color:yellow;" class="text_right"><span t-field="o.estimated_consumption" /></td>
+                                    <td style="background-color:yellow;" class="text_right"><span t-field="o.estimated_price" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                                    <td class="text_right"><span t-field="o.competitor_total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td><span t-field="o.product_id"/></td>
+                                    <td class="text_right"><span t-field="o.cortex_estimated_consumption"/></td>
+                                    <td class="text_right"><span t-field="o.price" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text_right"><span t-field="o.cortex_total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text_right"><span t-field="o.cornomics_percent_savings"/>%</td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td></td>
+                                <td colspan="2"><b>MONTHLY OPERATING COSTS</b></td>
+                                <td class="text_right"><b><span t-field="doc.competitor_monthly_op_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b></td>
+                                <td colspan="3"><b>MONTHLY OPERATING COSTS</b></td>
+                                <td colspan="2" class="text_right"><b><span t-field="doc.cortex_monthly_op_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2"><b>ANNUAL OPERATING COSTS</b></td>
+                                <td class="text_right"><b><span t-field="doc.competitor_annual_op_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b></td>
+                                <td colspan="3" style="background-color:lightgreen;"><b>ANNUAL OPERATING COSTS</b></td>
+                                <td colspan="2" style="background-color:lightgreen;" class="text_right"><b><span t-field="doc.cortex_annual_op_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td colspan="3" style="background-color:lightgreen;"><b>ANNUAL SAVINGS WITH CORTEX</b></td>
+                                <td colspan="2" style="background-color:lightgreen;" class="text_right"><b><span t-field="doc.cortex_annual_saving" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b></td>
+                            </tr>
+                        </table>
+                        <div style="background-color:lightblue;">
+                            <div class="row">
+                                <center><h2 >ROI ANALYSIS FOR CORTEX UPGRADE</h2></center>
+                            </div>
+                        </div>
+                        <div>
+                             <table style="margin-top:30px;">
+                                <tr>
+                                    <td style="width:300px!important;border-bottom:1px solid;">ASSUMPTIONS</td>
+                                    <td style="width:810px!important;vertical-align:text-top!important;border-bottom: 1;line-height:3;border-bottom:1px solid ;"><span t-esc="doc.assumption"/></td>
+                                </tr>
+                             </table>
+                        </div>
+                        <div class="clearfix" style="margin-top:30px;">
+                            <table border="1" style="float:left;">
+                                <tr>
+                                    <th style="background-color:lightgray;" colspan="2">COMPETITOR ROI</th>
+                                </tr>
+                                <tr>
+                                    <td>ANNUAL KNIFE COST</td>
+                                    <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.competitor_annual_knife_cost"/></td>
+                                </tr>
+                                <tr>
+                                    <td>COST OF NEW BASES</td>
+                                    <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.cost_of_new_bases"/></td>
+                                </tr>
+                                <tr>
+                                    <td>BASE CONSUMPTION / YEAR</td>
+                                    <td class="text_right"><span t-field="doc.base_consumption_year"/></td>
+                                </tr>
+                                <tr>
+                                    <td>NORMAL HOLDER REPLACEMENT COST</td>
+                                    <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.normal_holder_replacement_cost"/></td>
+                                </tr>
+                            </table>
+
+                            <table  style="float:right;">
+                                <tr>
+                                    <th style="background-color:lightgray;" colspan="2">CORTEX ROI</th>
+                                </tr>
+                                <tr>
+                                    <td>INVESTMENT COST</td>
+                                    <td class="text_right"><span  t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.investment_cost"/></td>
+                                </tr>
+                                <tr>
+                                    <td>LESS-NORMAL HOLDER REPLACEMENT COST</td>
+                                    <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.less_normal_holder_replacement_cost"/></td>
+                                </tr>
+                                <tr>
+                                    <td>TOTAL INVESTMENT</td>
+                                    <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.total_investment"/></td>
+                                </tr>
+                                <tr>
+                                    <td><b>ANNUAL SAVINGS WITH CORTEX</b></td>
+                                    <td class="text_right"><b><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.annual_savings_with_cortex"/></b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>INDIRECT SAVINGS WITH CORTEX</b></td>
+                                    <td class="text_right"><b><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.indirect_savings_with_cortex"/></b></td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+
+                        <table>
+                            <tr>
+                                <th style="background-color:lightgray;" colspan="2">CORTEX ROI BENEFITS</th>
+                            </tr>
+                            <tr>
+                                <td>GRINDING LABOR SAVING HOURS PER WEEK</td>
+                                <td class="text_right"><span t-field="doc.grinding_labor_savings"/></td>
+                            </tr>
+                            <tr>
+                                <td>KNIFE CHANGE LABOR HOURS</td>
+                                <td class="text_right"><span t-field="doc.knife_change_labor"/></td>
+                            </tr>
+                            <tr>
+                                <td>HOURLY LABOR COST</td>
+                                <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.hourly_labor_cost" /></td>
+                            </tr>
+                            <tr>
+                                <td>WEEKLY LABOR SAVINGS</td>
+                                <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.weekly_labor_savings"/></td>
+                            </tr>
+                            <tr>
+                                <td>MONTHLY LABOUR SAVINGS</td>
+                                <td class="text_right"><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.monthly_labor_savings"/></td>
+                            </tr>
+                            <tr>
+                                <td><b>TOTAL</b></td>
+                                <td class="text_right"><b><span t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-field="doc.indirect_cortex_roi_benefits_total"/></b></td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo> 

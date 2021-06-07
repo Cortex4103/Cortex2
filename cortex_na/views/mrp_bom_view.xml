@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mrp_bom_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.bom.form</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="model">mrp.bom</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="export_bom_pricing" string="Export Pricing" type="object" />
+                    </header>
+                </xpath>
+                <xpath expr="//page[1]" position="after">
+                    <page string="Service Charges">
+                        <field name="service_charge_ids">
+                            <tree string="Service Charges" editable="bottom">
+                                <field name="product_id" required="1" context="{'default_type':'service'}" domain="[('type', '=', 'service')]"/>
+                                <field name="price_unit"/>
+                                <field name="product_uom_id"/>
+                                <field name="quantity"/>
+                                <field name="subtotal"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
+                            <field name="currency_id" invisible="1"/>
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="service_charge_total" />
+                            </div>
+                            <field name="service_charge_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </page>
+                </xpath>
+                <field name="routing_id" position="after">
+                    <field name="charges_per"/>
+                    <field name="charges_per_change" invisible="1"/>
+                </field>
+                <xpath expr="//field[@name='byproduct_ids']/tree/field[@name='product_uom_id']" position="after">
+                    <field name="charges_per"/>
+                </xpath>
+                <xpath expr="//field[@name='byproduct_ids']/tree" position="attributes">
+                    <attribute name="editable">bottom</attribute>
+                </xpath>
+                <field name="type" position="before">
+                    <field name="partner_ids" widget="many2many_tags"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
