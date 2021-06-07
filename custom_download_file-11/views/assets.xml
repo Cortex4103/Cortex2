@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="custom_download_file_assets" name="assets" inherit_id="web.assets_backend">
+            <xpath expr="//script[last()]" position="after">
+                <script type="text/javascript" src="/custom_download_file-11/static/src/js/widget.js"></script>
+            </xpath>
+        </template>
+    </data>
+
+</odoo>
