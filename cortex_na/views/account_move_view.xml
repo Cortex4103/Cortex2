@@ -19,10 +19,6 @@
                 <group id="header_right_group" position="inside">
                     <field name="invoice_origin" string="Source Document" force_save="1"/>
                 </group>
-                <field name="partner_id" position="attributes">
-                    <attribute name="widget"/>
-                    <attribute name="domain">['|',('is_company','=',True),('is_company','=',False),('parent_id','=',False),('customer_rank','>',0)]</attribute>
-                </field>
                 <xpath expr="//group[@id='header_right_group']/field[@name='date']" position="before">
                     <div class="o_td_label">
                         <label for="expected_date" string="Expected Payment Date" style="font-weight:bold;" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
