@@ -3,9 +3,7 @@
     <record model="ir.ui.menu" id="base.menu_management">
         <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
     </record>
-    <record model="ir.ui.menu" id="stock.menu_action_inventory_form">
-        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
-    </record>
+
     <record model="ir.ui.menu" id="crm.crm_config_settings_menu">
         <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
     </record>
@@ -27,9 +25,6 @@
     <record model="ir.ui.menu" id="mrp.menu_mrp_config">
         <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
     </record>
-<!--    <record model="ir.ui.menu" id="project.project_config_settings_menu_action">-->
-<!--        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>-->
-<!--    </record>-->
     <record model="ir.ui.menu" id="hr.hr_menu_configuration">
         <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
     </record>
