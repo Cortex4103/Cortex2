@@ -7,19 +7,24 @@ from odoo.exceptions import Warning
 import datetime
 from datetime import timedelta
 
+
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     delivered_amount = fields.Float('Delivered Amount', compute='_compute_delivered_amount', store=True)
-    pending_amount = fields.Float('Pending Amount', compute='_compute_pending_amount',store=True)
-    product_ids = fields.Many2many('product.product', string='Product', compute='_compute_product_categories', store=True)
-    product_categ_ids = fields.Many2many('product.category', string='Product Category', compute='_compute_product_categories', store=True)
+    pending_amount = fields.Float('Pending Amount', compute='_compute_pending_amount', store=True)
+    product_ids = fields.Many2many('product.product', string='Product', compute='_compute_product_categories',
+                                   store=True)
+    product_categ_ids = fields.Many2many('product.category', string='Product Category',
+                                         compute='_compute_product_categories', store=True)
     purchase_count = fields.Integer(compute='_compute_purchase_count', string='Purchase Order')
     remaining_funds_to_be_received = fields.Float("Remaining Funds To Be Received",
-                                                  compute='_compute_remaining_funds_to_be_received',store=True)
+                                                  compute='_compute_remaining_funds_to_be_received', store=True)
     new_expected_date = fields.Date(string='Expected Date', default=fields.Date.today, track_visibility='onchange')
     show_in_cash_flow = fields.Boolean(string='Show in Cash FLow')
-    warehouse_id = fields.Many2one( 'stock.warehouse', string='Warehouse', required=False, states={'sale': [('required', True)],'done' :[('required', True)]}, readonly=False, default=None)
+    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=False,
+                                   states={'sale': [('required', True)], 'done': [('required', True)]}, readonly=False,
+                                   default=None)
     manufacturing_count = fields.Integer(compute='_compute_manufacture_count', string='Manufacture Order')
     expected_ship_date = fields.Date(string='Expected Ship Date', track_visibility='onchange', copy=False)
     dont_apply_gst = fields.Boolean(string="Don't Apply GST", default=False, track_visibility='onchange', copy=False)
@@ -45,12 +50,12 @@ class SaleOrder(models.Model):
             self.new_expected_date = (inv_date + datetime.timedelta(0)).strftime("%Y-%m-%d")
 
     def _compute_purchase_count(self):
-            purchase_order = self.env['purchase.order'].search([('select_sale_order_ids', 'in', self.id)])
-            self.purchase_count = len(purchase_order)
+        purchase_order = self.env['purchase.order'].search([('select_sale_order_ids', 'in', self.id)])
+        self.purchase_count = len(purchase_order)
 
     def _compute_manufacture_count(self):
-            manufacture_order = self.env['mrp.production'].search([('sale_order_ids', 'in', self.id)])
-            self.manufacturing_count = len(manufacture_order)
+        manufacture_order = self.env['mrp.production'].search([('sale_order_ids', 'in', self.id)])
+        self.manufacturing_count = len(manufacture_order)
 
     def action_view_purchase_order(self):
         purchase_obj = self.env['purchase.order'].search([('select_sale_order_ids', 'in', self.id)])
@@ -96,10 +101,10 @@ class SaleOrder(models.Model):
                 'name': _('Manufacturing Orders'),
                 'res_model': 'mrp.production',
                 'type': 'ir.actions.act_window',
-                'domain': [('sale_order_ids','in',self.id)],
+                'domain': [('sale_order_ids', 'in', self.id)],
                 'res_id': manufacture_ids and manufacture_ids[0]
             }
-        else :
+        else:
             return {
                 'name': _('Manufacturing Orders'),
                 'res_model': 'mrp.production',
@@ -108,8 +113,6 @@ class SaleOrder(models.Model):
                 'domain': [('sale_order_ids', 'in', self.id)],
             }
 
-
-       
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
         if self._context.get('ctx_amount_pending_to_deliver'):
@@ -117,11 +120,12 @@ class SaleOrder(models.Model):
             for record in self.sudo().search([]):
                 if record.amount_total > record.delivered_amount:
                     order_list.append(record.id)
-            domain += [['id','in', order_list]]
-            return super(SaleOrder, self.sudo()).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+            domain += [['id', 'in', order_list]]
+            return super(SaleOrder, self.sudo()).search_read(domain=domain, fields=fields, offset=offset, limit=limit,
+                                                             order=order)
         return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
 
-    @api.depends('order_line','order_line.product_id', 'order_line.product_id.categ_id')
+    @api.depends('order_line', 'order_line.product_id', 'order_line.product_id.categ_id')
     def _compute_product_categories(self):
         for record in self:
             product_list = []
@@ -135,16 +139,16 @@ class SaleOrder(models.Model):
             record.product_ids = [(6, 0, product_list)]
             record.product_categ_ids = [(6, 0, product_categ_list)]
 
-
-    @api.depends('state','order_line.product_id','order_line.product_uom_qty','order_line.qty_delivered','order_line.net_price')
+    @api.depends('state', 'order_line.product_id', 'order_line.product_uom_qty', 'order_line.qty_delivered',
+                 'order_line.net_price')
     def _compute_delivered_amount(self):
         deliverd_amount = 0
         for record in self:
             deliverd_amount = 0
-            if record.state not in ('draft','sent'):
+            if record.state not in ('draft', 'sent'):
                 for line in record.order_line:
-                        deliverd_qty = line.qty_delivered *line.net_price
-                        deliverd_amount += deliverd_qty
+                    deliverd_qty = line.qty_delivered * line.net_price
+                    deliverd_amount += deliverd_qty
                 record.delivered_amount = deliverd_amount
             else:
                 record.delivered_amount = 0.0
@@ -153,8 +157,9 @@ class SaleOrder(models.Model):
             # elif line.product_id.type =='consu' or line.product_id.type == 'product':
             #     deliverd_qty = line.qty_delivered *line.net_price
 
-    @api.depends('pending_amount','order_line', 'state', 'order_line.product_id',
-                 'order_line.product_uom_qty', 'order_line.qty_delivered', 'order_line.net_price','order_line.qty_invoiced')
+    @api.depends('pending_amount', 'order_line', 'state', 'order_line.product_id',
+                 'order_line.product_uom_qty', 'order_line.qty_delivered', 'order_line.net_price',
+                 'order_line.qty_invoiced')
     def _compute_remaining_funds_to_be_received(self):
         for record in self:
             advance_payment = 0.0
@@ -176,9 +181,8 @@ class SaleOrder(models.Model):
             else:
                 record.remaining_funds_to_be_received = 0.0
 
-
-
-    @api.depends('state','order_line.product_id', 'order_line.product_uom_qty', 'order_line.qty_delivered','order_line.net_price')
+    @api.depends('state', 'order_line.product_id', 'order_line.product_uom_qty', 'order_line.qty_delivered',
+                 'order_line.net_price')
     def _compute_pending_amount(self):
         for record in self:
             line_pending_amount = 0
@@ -186,36 +190,32 @@ class SaleOrder(models.Model):
             if record.state not in ('draft', 'sent'):
                 for line in record.order_line:
                     if line.is_downpayment == True:
-                            advance_payment = line.product_uom_qty *line.net_price
-                            qty = line.product_uom_qty - line.qty_delivered
-                            line_pending_amount = (qty * line.net_price) - advance_payment
+                        advance_payment = line.product_uom_qty * line.net_price
+                        qty = line.product_uom_qty - line.qty_delivered
+                        line_pending_amount = (qty * line.net_price) - advance_payment
                     else:
-                            qty = line.product_uom_qty - line.qty_delivered
-                            line_pending_amount = qty * line.net_price
+                        qty = line.product_uom_qty - line.qty_delivered
+                        line_pending_amount = qty * line.net_price
                     pending_amounts += line_pending_amount
                 record.pending_amount = pending_amounts
             else:
                 record.pending_amount = 0.0
-
 
     @api.depends('state')
     def _compute_type_name(self):
         for record in self:
             record.type_name = _('Quote Number')
 
-
-
     @api.onchange('company_id')
     def _onchange_company_id(self):
         if self.company_id:
-            warehouse_id=self.warehouse_id
+            warehouse_id = self.warehouse_id
 
     def action_confirm(self):
         if not self.warehouse_id:
             raise Warning(_('Please select warehouse before confirming order'))
         res = super(SaleOrder, self).action_confirm()
         return res
-
 
     # def action_confirm(self):
     #     res = super(SaleOrder, self).action_confirm()
@@ -242,10 +242,10 @@ class SaleOrder(models.Model):
     #     return res
 
     @api.model
-    def create(self,vals):
+    def create(self, vals):
         res = super(SaleOrder, self).create(vals)
         if not res.dont_apply_gst:
-            ord_line = self.add_gst_in_sale_order('create',res)
+            ord_line = self.add_gst_in_sale_order('create', res)
         return res
 
     def write(self, vals):
@@ -255,62 +255,65 @@ class SaleOrder(models.Model):
                 ord_line = record.add_gst_in_sale_order('write')
             elif record.state in ['draft', 'sent']:
                 record.remove_gst_line()
-        return res   
-    
+        return res
+
     def remove_gst_line(self):
         gst_product_id = self.env['ir.config_parameter'].sudo().get_param('cortex_na.canadian_gst_product_id')
         if gst_product_id:
-            so_line = self.env['sale.order.line'].search([('order_id','=',self.id),('product_id', '=', int(gst_product_id))])
+            so_line = self.env['sale.order.line'].search(
+                [('order_id', '=', self.id), ('product_id', '=', int(gst_product_id))])
             if so_line:
-                so_line.unlink() 
+                so_line.unlink()
 
-    def add_gst_in_sale_order(self,gst_type,order = {}):
+    def add_gst_in_sale_order(self, gst_type, order={}):
         so_values = {}
         gst_product_id = self.env['ir.config_parameter'].sudo().get_param('cortex_na.canadian_gst_product_id')
-        product =  self.env['product.product'].search([('id', '=',int(gst_product_id))])
+        product = self.env['product.product'].search([('id', '=', int(gst_product_id))])
         if product:
-            total,line_total = 0,0
+            total, line_total = 0, 0
             if gst_type == 'write':
-                gst = self.env['canadian.gst'].search([('state_id','=',self.partner_id.state_id.id)])
+                gst = self.env['canadian.gst'].search([('state_id', '=', self.partner_id.state_id.id)])
                 if gst.sale_gst:
                     for line in self.order_line:
                         if line.product_id.id != product.id:
-                            line_total +=line.price_subtotal
+                            line_total += line.price_subtotal
 
-                    total = ((line_total * gst.sale_gst)/100)
+                    total = ((line_total * gst.sale_gst) / 100)
                     so_values = {
-                        'name':product.name,
+                        'name': product.name,
                         'price_unit': total,
-                        'product_uom_qty':1,
+                        'product_uom_qty': 1,
                         'order_id': self.id,
                         'discount': 0.0,
-                        'product_uom':product.uom_id.id,
-                        'product_id':product.id,
-                        'net_price':total
+                        'product_uom': product.uom_id.id,
+                        'product_id': product.id,
+                        'net_price': total
                     }
                     if product.id in self.order_line.product_id.ids:
-                        so_line = self.env['sale.order.line'].search([('order_id','=',self.id),('product_id','=',product.id)])
+                        so_line = self.env['sale.order.line'].search(
+                            [('order_id', '=', self.id), ('product_id', '=', product.id)])
                         so_line.write(so_values)
                         return so_line
                     else:
                         so_line = self.env['sale.order.line'].create(so_values)
                         return so_line
                 else:
-                    so_line = self.env['sale.order.line'].search([('order_id','=',self.id),('product_id','=',product.id)])
+                    so_line = self.env['sale.order.line'].search(
+                        [('order_id', '=', self.id), ('product_id', '=', product.id)])
                     so_line.unlink()
             elif gst_type == 'create':
-                gst_create = self.env['canadian.gst'].search([('state_id','=',order.partner_id.state_id.id)])
+                gst_create = self.env['canadian.gst'].search([('state_id', '=', order.partner_id.state_id.id)])
                 if gst_create.sale_gst:
-                    total = ((order.amount_total * gst_create.sale_gst)/100)
+                    total = ((order.amount_total * gst_create.sale_gst) / 100)
                     so_values = {
-                        'name':product.name,
+                        'name': product.name,
                         'price_unit': total,
-                        'product_uom_qty':1,
+                        'product_uom_qty': 1,
                         'order_id': order.id,
                         'discount': 0.0,
-                        'product_uom':product.uom_id.id,
-                        'product_id':product.id,
-                        'net_price':total
+                        'product_uom': product.uom_id.id,
+                        'product_id': product.id,
+                        'net_price': total
                     }
                     so_line = self.env['sale.order.line'].create(so_values)
                     return so_line
@@ -323,7 +326,7 @@ class SaleOrder(models.Model):
             'type': 'ir.actions.act_window',
             'res_model': 'add.sawmill',
             'view_mode': 'form',
-            'view_id':self.env.ref('cortex_na.add_sawmill_form_view').id,
+            'view_id': self.env.ref('cortex_na.add_sawmill_form_view').id,
             'context': {'default_sale_id': self.id},
             'target': 'new'
         }
@@ -334,22 +337,27 @@ class SaleOrder(models.Model):
             if sale_order:
                 sale_order.write({'state': 'cancel'})
 
-
     def cron_change_saleperson(self):
-        sale_order = self.env['sale.order'].search([('user_id','=','John McGee')])
-        gavin_carpenter = self.env['res.users'].search([('name','=','Trent Carpenter')])              
+        sale_order = self.env['sale.order'].search([('user_id', '=', 'John McGee')])
+        gavin_carpenter = self.env['res.users'].search([('name', '=', 'Trent Carpenter')])
         if sale_order:
             for record in sale_order:
                 record.write({'user_id': gavin_carpenter.id})
-        customers = self.env['res.partner'].search([('user_id','=','John McGee')])        
+        customers = self.env['res.partner'].search([('user_id', '=', 'John McGee')])
         if customers:
             for record in customers:
                 record.write({'user_id': gavin_carpenter.id})
-        leads_obj = self.env['crm.lead'].search([('user_id','=','John McGee')])        
+        leads_obj = self.env['crm.lead'].search([('user_id', '=', 'John McGee')])
         if leads_obj:
             for record in leads_obj:
                 record.write({'user_id': gavin_carpenter.id})
         return True
+
+    def update_lines_delivered_qty(self):
+        for order in self:
+            for line in order.order_line:
+                if line.product_id.id in [2258, 2259]:
+                    line.qty_delivered_method = 'manual'
 
 
 class SaleOrderLine(models.Model):
@@ -395,7 +403,8 @@ class SaleOrderLine(models.Model):
                         else:
                             valuation_cost = sum([s.unit_cost for s in stock_valuation]) / len(stock_valuation)
                             qty_delivered = sum([s.unit_cost for s in stock_valuation])
-                        sale_cost = ((product_uom_qty - qty_delivered) * sale_cost + qty_delivered * valuation_cost) / product_uom_qty
+                        sale_cost = ((
+                                                 product_uom_qty - qty_delivered) * sale_cost + qty_delivered * valuation_cost) / product_uom_qty
                 else:
                     if product_uom_qty == qty_delivered:
                         stock_valuation = stock_valuation_obj.search([('stock_move_id.sale_line_id', '=', record.id)])
@@ -411,7 +420,8 @@ class SaleOrderLine(models.Model):
                                 valuation_cost = stock_valuation.unit_cost
                             else:
                                 valuation_cost = sum([s.unit_cost for s in stock_valuation]) / len(stock_valuation)
-                            sale_cost = ((product_uom_qty - qty_delivered) * sale_cost + qty_delivered * valuation_cost) / product_uom_qty
+                            sale_cost = ((
+                                                     product_uom_qty - qty_delivered) * sale_cost + qty_delivered * valuation_cost) / product_uom_qty
             else:
                 sale_cost = 0
             record.sale_cost = sale_cost
@@ -451,16 +461,20 @@ class SaleOrderLine(models.Model):
         for order_line in self:
             if order_line.qty_delivered_method == 'stock_move':
                 boms = order_line.move_ids.mapped('bom_line_id.bom_id')
-                main_bom = boms.filtered(lambda b: b.type == 'phantom' and (b.product_id == order_line.product_id or (b.product_tmpl_id == order_line.product_id.product_tmpl_id and not b.product_id)))
+                main_bom = boms.filtered(lambda b: b.type == 'phantom' and (b.product_id == order_line.product_id or (
+                            b.product_tmpl_id == order_line.product_id.product_tmpl_id and not b.product_id)))
                 if not main_bom:
-                    domain = ['|',('product_id','=',order_line.product_id.id),('product_tmpl_id','=',order_line.product_id.product_tmpl_id.id),('type','=','phantom')]
-                    bom_obj = self.env['mrp.bom'].search(domain,limit=1)
-                    main_bom =bom_obj
+                    domain = ['|', ('product_id', '=', order_line.product_id.id),
+                              ('product_tmpl_id', '=', order_line.product_id.product_tmpl_id.id),
+                              ('type', '=', 'phantom')]
+                    bom_obj = self.env['mrp.bom'].search(domain, limit=1)
+                    main_bom = bom_obj
 
                 boms |= main_bom
                 relevant_bom = boms.filtered(lambda b: b.type == 'phantom' and
-                        (b.product_id == order_line.product_id or
-                        (b.product_tmpl_id == order_line.product_id.product_tmpl_id and not b.product_id)))
+                                                       (b.product_id == order_line.product_id or
+                                                        (
+                                                                    b.product_tmpl_id == order_line.product_id.product_tmpl_id and not b.product_id)))
                 if relevant_bom:
                     # In case of dropship, we use a 'all or nothing' policy since 'bom_line_id' was
                     # not written on a move coming from a PO.
@@ -470,16 +484,17 @@ class SaleOrderLine(models.Model):
                     # state of all PO as well... but sale_mrp doesn't depend on purchase.
                     moves = order_line.move_ids.filtered(lambda m: m.state == 'done' and not m.scrapped)
                     filters = {
-                        'incoming_moves': lambda m: m.location_dest_id.usage == 'customer' and (not m.origin_returned_move_id or (m.origin_returned_move_id and m.to_refund)),
+                        'incoming_moves': lambda m: m.location_dest_id.usage == 'customer' and (
+                                    not m.origin_returned_move_id or (m.origin_returned_move_id and m.to_refund)),
                         'outgoing_moves': lambda m: m.location_dest_id.usage != 'customer' and m.to_refund
                     }
-                    order_qty = order_line.product_uom._compute_quantity(order_line.product_uom_qty, relevant_bom.product_uom_id)
-                    order_line.qty_delivered = moves._compute_kit_quantities(order_line.product_id, order_qty, relevant_bom, filters)
+                    order_qty = order_line.product_uom._compute_quantity(order_line.product_uom_qty,
+                                                                         relevant_bom.product_uom_id)
+                    order_line.qty_delivered = moves._compute_kit_quantities(order_line.product_id, order_qty,
+                                                                             relevant_bom, filters)
 
 
 class SaleOrderOption(models.Model):
     _inherit = "sale.order.option"
 
     quantity = fields.Float('Quantity', required=True, digits='New Cortex Precision', default=1)
-
-
