@@ -282,7 +282,7 @@ class SaleOrder(models.Model):
                     so_values = {
                         'name': product.name,
                         'price_unit': total,
-                        'product_uom_qty': 1,
+                        'product_uom_qty': 0,
                         'order_id': self.id,
                         'discount': 0.0,
                         'product_uom': product.uom_id.id,
@@ -308,7 +308,7 @@ class SaleOrder(models.Model):
                     so_values = {
                         'name': product.name,
                         'price_unit': total,
-                        'product_uom_qty': 1,
+                        'product_uom_qty': 0,
                         'order_id': order.id,
                         'discount': 0.0,
                         'product_uom': product.uom_id.id,
